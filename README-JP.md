@@ -1,3 +1,7 @@
 # bf6-MultiObjectsTransform
-This script supports relative transforms for objects within the BF6 Portal.
-When used appropriately, multiple objects can be combined to form composite objects and set them in motion.
+このスクリプトは、BF6 Portalでのオブジェクトの相対的な移動/任意軸での回転やそれらを合成した運動をサポートします。
+また、適切に運用することで、複数のオブジェクトを組み合わせて複合オブジェクトを作成し、それらを動かせます。
+
+これらの機能を用いれば、ある程度の物理演算を実装したオブジェクトによるサッカーやBF1の飛行船などの巨大兵器の再現、オブジェクトのアニメーションによるBF4のレボリューションの再現など様々な機能が実装できると考えています。
+ぜひ使ってみてください。
+使用した場合は教えていただけるとyonekuriが喜んで見に行きます。
