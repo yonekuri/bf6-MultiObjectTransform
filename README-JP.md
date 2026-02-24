@@ -9,6 +9,7 @@ https://x.com/yonekuri_SdKfz2/status/2023845205548679601
 使用した場合は教えていただけるとyonekuriが喜んで見に行きます。
 
 ## 使い方
+[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの任意の場所コピー&ペーストしてください。
 
 ## 機能
 このスクリプトではRuntimeObjectクラスを追加します。
