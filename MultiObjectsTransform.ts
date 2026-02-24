@@ -1,33 +1,38 @@
 class RuntimeObject {
-    object: mod.Object;
-    id: number;
-    Enum: mod.RuntimeSpawn_Common 
-        | mod.RuntimeSpawn_Granite_ResidentialNorth 
-        | mod.RuntimeSpawn_Abbasid 
-        | mod.RuntimeSpawn_Aftermath 
-        | mod.RuntimeSpawn_Badlands 
-        | mod.RuntimeSpawn_Battery 
-        | mod.RuntimeSpawn_Capstone 
-        | mod.RuntimeSpawn_Dumbo
-        | mod.RuntimeSpawn_Eastwood
-        | mod.RuntimeSpawn_FireStorm
-        | mod.RuntimeSpawn_Limestone
-        | mod.RuntimeSpawn_Outskirts
-        | mod.RuntimeSpawn_Tungsten
-        | mod.RuntimeSpawn_Granite_Downtown
-        | mod.RuntimeSpawn_Granite_Marina
-        | mod.RuntimeSpawn_Granite_MilitaryRnD
-        | mod.RuntimeSpawn_Granite_MilitaryStorage
-        | mod.RuntimeSpawn_Granite_TechCenter
-        | mod.RuntimeSpawn_Sand;
-    offset: mod.Vector;
+    readonly object: mod.Object;
+    readonly id: number;
+    readonly Enum: mod.RuntimeSpawn_Common 
+                 | mod.RuntimeSpawn_Granite_ResidentialNorth 
+                 | mod.RuntimeSpawn_Abbasid 
+                 | mod.RuntimeSpawn_Aftermath 
+                 | mod.RuntimeSpawn_Badlands 
+                 | mod.RuntimeSpawn_Battery 
+                 | mod.RuntimeSpawn_Capstone 
+                 | mod.RuntimeSpawn_Dumbo
+                 | mod.RuntimeSpawn_Eastwood
+                 | mod.RuntimeSpawn_FireStorm
+                 | mod.RuntimeSpawn_Limestone
+                 | mod.RuntimeSpawn_Outskirts
+                 | mod.RuntimeSpawn_Tungsten
+                 | mod.RuntimeSpawn_Granite_Downtown
+                 | mod.RuntimeSpawn_Granite_Marina
+                 | mod.RuntimeSpawn_Granite_MilitaryRnD
+                 | mod.RuntimeSpawn_Granite_MilitaryStorage
+                 | mod.RuntimeSpawn_Granite_TechCenter
+                 | mod.RuntimeSpawn_Sand;
+    readonly offset: mod.Vector;
 
-    center: mod.Vector;
-    rotState: [number,number,number,number];
+    private _center: mod.Vector;
+    private _rotState: [number,number,number,number];
 
-    dpos: mod.Vector;
-    dQrot: [number,number,number,number];
-    isTransform: boolean;
+    private _dpos: mod.Vector;
+    private _dQrot: [number,number,number,number];
+    private _isTransform: boolean = false;
+
+    //getter
+    get position(): mod.Vector {
+        return this._center;
+    }
 
     //In-class functions
     static #QNormalize(q: readonly [number,number,number,number]): [number,number,number,number] {
@@ -127,16 +132,15 @@ class RuntimeObject {
                 angle: number,
                 scale: mod.Vector) {
         this.Enum = Enum;
-        this.center = center;
-        this.rotState = RuntimeObject.#MakeRotQ(axis,angle);
+        this._center = center;
+        this._rotState = RuntimeObject.#MakeRotQ(axis,angle);
 
-        this.object = mod.SpawnObject(Enum, mod.Add(center,RuntimeObject.#QRotateVector(offset,this.rotState)), RuntimeObject.#QtoEuler(this.rotState), scale);
+        this.object = mod.SpawnObject(Enum, mod.Add(center,RuntimeObject.#QRotateVector(offset,this._rotState)), RuntimeObject.#QtoEuler(this._rotState), scale);
         this.id = mod.GetObjId(this.object);
         this.offset = offset;
 
-        this.dpos = mod.CreateVector(0,0,0);
-        this.dQrot = [1,0,0,0];
-        this.isTransform = false;
+        this._dpos = mod.CreateVector(0,0,0);
+        this._dQrot = [1,0,0,0];
     }
 
     //class method
@@ -146,41 +150,41 @@ class RuntimeObject {
 
     Move(delta: mod.Vector) {
         const dpos = delta;
-        this.dpos = mod.Add(this.dpos,dpos);
-        this.isTransform = true;
+        this._dpos = mod.Add(this._dpos,dpos);
+        this._isTransform = true;
     }
 
-    QRotation(axis: mod.Vector, angle: number, rotCent: mod.Vector = this.center) {
+    QRotation(axis: mod.Vector, angle: number, rotCent: mod.Vector = this._center) {
         const [dqw,dqx,dqy,dqz] = RuntimeObject.#MakeRotQ(axis,angle);
-        this.dQrot = RuntimeObject.#QProduct([dqw,dqx,dqy,dqz],this.dQrot);
+        this._dQrot = RuntimeObject.#QProduct([dqw,dqx,dqy,dqz],this._dQrot);
 
-        const diffCenter = mod.Subtract(this.center,rotCent)
+        const diffCenter = mod.Subtract(this._center,rotCent)
         const dpos = mod.Subtract(RuntimeObject.#QRotateVector(diffCenter,[dqw,dqx,dqy,dqz]),diffCenter)
-        this.dpos = mod.Add(this.dpos,dpos);
+        this._dpos = mod.Add(this._dpos,dpos);
 
-        this.isTransform = true;
+        this._isTransform = true;
     }
 
     ApplyTransform () {
-        if (this.isTransform) {
-            const [qw,qx,qy,qz] = this.rotState;
-            const [dqw,dqx,dqy,dqz] = this.dQrot;
+        if (this._isTransform) {
+            const [qw,qx,qy,qz] = this._rotState;
+            const [dqw,dqx,dqy,dqz] = this._dQrot;
             const [fqw,fqx,fqy,fqz] = RuntimeObject.#QProduct([dqw,dqx,dqy,dqz],[qw,qx,qy,qz]);
             const rot = RuntimeObject.#QtoEuler([fqw,fqx,fqy,fqz]);
 
             const oldoffset = RuntimeObject.#QRotateVector(this.offset,[qw,qx,qy,qz]);
             const newoffset = RuntimeObject.#QRotateVector(this.offset,[fqw,fqx,fqy,fqz]);
-            const dpos = mod.Add(this.dpos,mod.Subtract(newoffset,oldoffset));
+            const dpos = mod.Add(this._dpos,mod.Subtract(newoffset,oldoffset));
             const pos = mod.Add(mod.GetObjectPosition(this.object),dpos);
 
             const transform = mod.CreateTransform(pos,rot);
             mod.SetObjectTransform(this.object,transform);
-            this.center = mod.Subtract(pos,newoffset);
-            this.rotState = [fqw,fqx,fqy,fqz];
+            this._center = mod.Subtract(pos,newoffset);
+            this._rotState = [fqw,fqx,fqy,fqz];
 
-            this.dpos = mod.CreateVector(0,0,0);
-            this.dQrot = [1,0,0,0];
-            this.isTransform = false;
+            this._dpos = mod.CreateVector(0,0,0);
+            this._dQrot = [1,0,0,0];
+            this._isTransform = false;
         }
     }
 }
