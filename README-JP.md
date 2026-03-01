@@ -12,5 +12,5 @@
 このスクリプトではRuntimeObjectクラスを追加します。
 以下のように引数を指定してクラスのインスタンスを生成すると、ゲーム内にもオブジェクトがスポーンします。
 ```typescript
-let obj = new RuntimeObject(Enum, pos, offset, axis, angle, scale);
+let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```
