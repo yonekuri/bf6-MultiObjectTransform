@@ -65,7 +65,7 @@ ApplyTransform()
 
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale)
-```
+```<br>
 オブジェクトの子として新たにオブジェクトをスポーンさせます。
 指定できる引数はインスタンスの生成の際と同じです。<br>
 ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**で指定します。
