@@ -61,24 +61,29 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 メソッドは以下のように使用します。
 ```
 let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(-10.25,0,-10.25), mod.CreateVector(0,1,0), 0);
+obj.Move(mod.CreateVector(10,0,0));
+obj.ApplyTransform();
 ```
 各メソッドの説明は以下の通りです。
 
 ```typescript
 Move(dpos)
 ```
+オブジェクトの移動を相対座標で指示します。
 
 <br>
 
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
+オブジェクトの回転を回転軸と回転角で指示します。
 
 <br>
 
 ```typescript
 ApplyTransform()
 ```
+`Move`と`QRotation`で指示したオブジェクトの移動を反映します。
 
 <br>
 
@@ -88,7 +93,7 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale)
 オブジェクトの子として新たにオブジェクトをスポーンさせます。
 指定できる引数はインスタンスの生成の際と同じです。
 ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**で指定します。
-詳しい使い方は後述します。
+親子関係の詳しい使い方は後述します。
 
 <br>
 
