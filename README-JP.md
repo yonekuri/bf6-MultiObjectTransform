@@ -17,21 +17,17 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```
 各引数の意味は以下の通りです。
 
-`prefabEnum`:
-
+`prefabEnum`:<br>
 スポーンさせるオブジェクトを指定します。
 指定できる内容は現状公式で用意されている`SpawnObject`の引数と同様です。<br>
 また、`undefined`を指定することで「空オブジェクト」をスポーンさせることも可能です。
 この機能は主に後述するオブジェクトの親子関係を設定する際に使用できます。
 
 
-`pos: mod.Vector`:
-
+`pos: mod.Vector`:<br>
 オブジェクトをスポーンさせる位置を指定します。
-<br>
 
-`offset: mod.Vector`:
-
+`offset: mod.Vector`:<br>
 スポーンさせるオブジェクトの位置のオフセットを設定します。<br>
 この設定は主にオブジェクトの回転を行う際に重要です。<br>
 例えば`RuntimeSpawn_Common.FiringRange_Floor_01`は大きさ20.5×20.5の標準的な板型オブジェクトですが、ゲーム内でのオブジェクトの原点は板の角の部分に設定されています。
