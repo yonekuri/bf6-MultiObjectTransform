@@ -1,16 +1,16 @@
 # bf6-MultiObjectsTransform
-このスクリプトは、BF6 Portalでのオブジェクトの相対的な移動/任意軸での回転やそれらを合成した運動をサポートします。
-また、適切に運用することで、複数のオブジェクトを組み合わせて複合オブジェクトを作成し、それらを動かせます。
-下の動画の例では6つのFiringRange_Floor_01によって作成された立方体に対して並進運動と回転運動を同時に適用しています。
-https://x.com/yonekuri_SdKfz2/status/2023845205548679601
+このスクリプトはBF6 Portalでのオブジェクトの移動/任意軸での回転や、それらを合成した運動をサポートします。
+さらに、他のオブジェクトとの親子関係を設定してオブジェクトを生成することで複合オブジェクトを作成し、複数のオブジェクトを効率的に動かすことが可能です。
 
-これらの機能を用いれば、ある程度の物理演算を実装したオブジェクトによるサッカーやBF1の飛行船などの巨大兵器の再現、オブジェクトのアニメーションによるBF4のレボリューションの再現など様々な機能が実装できると考えています。
-ぜひ使ってみてください。
-使用した場合は教えていただけるとyonekuriが喜んで見に行きます。
+これらの機能を用いれば、BF1の飛行船などの巨大兵器の再現や、オブジェクトのアニメーションによるBF4のレボリューションの再現、ある程度の物理演算を実装すればオブジェクトによるサッカーまで様々な機能が実装できると考えています。
+この機能を使用していただけた場合は教えていただけると喜んで見に行きます。
 
 ## 使い方
-[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの任意の場所にコピー&ペーストしてください。
+[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## 機能
 このスクリプトではRuntimeObjectクラスを追加します。
 以下のように引数を指定してクラスのインスタンスを生成すると、ゲーム内にもオブジェクトがスポーンします。
+```typescript
+let obj = new RuntimeObject(Enum, pos, offset, axis, angle, scale);
+```
