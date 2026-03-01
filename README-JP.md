@@ -29,6 +29,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 
 オブジェクトをスポーンさせる位置を指定します。
 <br>
+
 `offset: mod.Vector`:
 
 スポーンさせるオブジェクトの位置のオフセットを設定します。<br>
