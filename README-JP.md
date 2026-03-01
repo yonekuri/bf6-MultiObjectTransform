@@ -15,6 +15,8 @@
 ```typescript
 let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```
+各引数の意味は以下の通りです。
+
 `prefabEnum`
 
 スポーンさせるオブジェクトを指定します。
@@ -25,17 +27,37 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 
 `pos: mod.Vector`
 
+オブジェクトをスポーンさせる位置を指定します。
 
 `offset: mod.Vector`
 
+スポーンさせるオブジェクトの位置のオフセットを設定します。
 
-`axis: mod.Vector`
+この設定は主にオブジェクトの回転を行う際に重要です。
 
+例えば`RuntimeSpawn_Common.FiringRange_Floor_01`は大きさ20.5×20.5の標準的な板型オブジェクトですが、ゲーム内でのオブジェクトの原点は板の角の部分に設定されています。
+これは`SpawnObject`などを使用してオブジェクトを回転させた際に角を中心に回転することを意味し、板の中心などを軸とした回転は公式の関数では不可能です。
 
-`angle: nuber`
+`RuntimeSpawn_Common.FiringRange_Floor_01`の例では`offset=mod.CreateVector(-10.25,0,-10.25)`と指定すると後述する`QRotation`などによる回転の中心が板の中心として変更されます。
+
+`axis: mod.Vector, angle: nuber`
+
+2つの引数でオブジェクトの初期姿勢を指定します。
+
+これはデフォルトの姿勢からの任意軸での回転という形で設定します。
+
+`axis`で回転軸、`angle`でラジアンでの回転角の指定を行います。`angle`に正の値を指定した場合は軸に対して左回転、負の値を指定した場合は右回転を行います。
+
+例えば、`axis=mod.CreateVector(0,1,0), angle=Math.PI/3`を指定した場合、オブジェクトはy軸を中心にデフォルトから30度回転した状態でスポーンします。
 
 
 `scale: mod.Vector`
+
+オブジェクトのスケールを指定します。
+
+この引数は省略可能であり、省略した場合にはオブジェクトのデフォルトのスケールである`scale=mod.CreateVector(1,1,1)`が指定されます。
+
+ただし、現在のBattlefield 6のバージョンでは`SetObjectTransform`関数や`MoveObject`関数などを利用してスケールを変更したオブジェクトを移動すると、オブジェクトの当たり判定のスケールはそのままに、見た目のスケールだけがデフォルトに戻ってしまうというバグが存在しています。そのため現状ではこの引数を使用することはおすすめしません。
 
 
 ## クラスメソッド
