@@ -69,28 +69,30 @@ obj.ApplyTransform();
 ```typescript
 Move(dpos)
 ```
-オブジェクトの移動を相対座標で指示します。
+オブジェクトの移動を相対座標で指示します。<br>
+ただし、この`Move`を実行するだけではゲーム内でオブジェクトの移動は反映されません。
 
 <br>
 
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
-オブジェクトの回転を回転軸と回転角で指示します。
+オブジェクトの回転を回転軸と回転角で指示します。<br>
 
 <br>
 
 ```typescript
 ApplyTransform()
 ```
-`Move`と`QRotation`で指示したオブジェクトの移動を反映します。
+`Move`と`QRotation`で指示したオブジェクトの移動を反映します。<br>
+
 
 <br>
 
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale)
 ```
-オブジェクトの子として新たにオブジェクトをスポーンさせます。
+オブジェクトの子として新たにオブジェクトをスポーンさせます。<br>
 指定できる引数はインスタンスの生成の際と同じです。
 ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**で指定します。
 親子関係の詳しい使い方は後述します。
@@ -100,7 +102,7 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale)
 ```typescript
 Remove()
 ```
-オブジェクトを削除します。
+オブジェクトを削除します。<br>
 
 ## オブジェクトの親子関係
 `NewChild`を使用することでオブジェクトの親子関係を指定することができます。<br>
