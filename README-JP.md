@@ -10,7 +10,7 @@
 [MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## 機能
-このスクリプトではRuntimeObjectクラスのみを追加します。<br>
+このスクリプトでは`RuntimeObject`クラスのみを追加します。<br>
 以下のように引数を指定してクラスのインスタンスを生成すると、ゲーム内にもオブジェクトがスポーンします。
 ```typescript
 let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
@@ -41,6 +41,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 これはデフォルトの姿勢からの任意軸での回転という形で設定します。<br>
 `axis`で回転軸、`angle`でラジアンでの回転角の指定を行います。`angle`に正の値を指定した場合は軸に対して左回転、負の値を指定した場合は右回転を行います。<br>
 例えば、`axis=mod.CreateVector(0,1,0), angle=Math.PI/3`を指定した場合、オブジェクトはy軸を中心にデフォルトから30度回転した状態でスポーンします。
+> ⚠️回転軸にゼロベクトル`axis=mod.CreateVector(0,0,0)`を指定した場合コンソールに警告が表示され、回転が無効化された状態でオブジェクトがスポーンします。
 <br><br>
 
 `scale: mod.Vector`:<br>
@@ -50,10 +51,18 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 そのため現状ではこの引数を使用することはおすすめしません。
 
 
-## クラスメソッド
+## メソッド
+`RuntimeObject`クラスには5つのメソッドが存在します。<br>
+メソッドは以下のように使用します。
+```
+let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(-10.25,0,-10.25), mod.CreateVector(0,1,0), 0);
+```
+各メソッドの説明は以下の通りです。
+
 ```typescript
 Move(dpos)
 ```
+
 <br><br>
 
 ```typescript
@@ -79,6 +88,7 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale)
 ```typescript
 Remove()
 ```
+オブジェクトを削除します。
 
 ## オブジェクトの親子関係
 `NewChild`を使用することでオブジェクトの親子関係を指定することができます。<br>
