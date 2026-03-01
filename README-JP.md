@@ -17,8 +17,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```
 各引数の意味は以下の通りです。
 
-`prefabEnum`:
-
+`prefabEnum`:<br>
 スポーンさせるオブジェクトを指定します。
 指定できる内容は現状公式で用意されている`SpawnObject`の引数と同様です。<br>
 また、`undefined`を指定することで「空オブジェクト」をスポーンさせることも可能です。
