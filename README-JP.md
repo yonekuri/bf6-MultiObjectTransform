@@ -15,3 +15,12 @@
 ```typescript
 let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```
+`prefabEnum`
+スポーンさせるオブジェクトを指定します。
+指定できる内容は公式で用意されている`SpawnObject`の引数と同様です。
+また、`undefined`を
+`pos: mod.Vector`
+`offset: mod.Vector`
+`axis: mod.Vector`
+`angle: nuber`
+`scale: mod.Vector`
