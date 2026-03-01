@@ -55,7 +55,7 @@ ApplyTransform()
 
 
 ```typescript
-newChild(prefabEnum, pos, offset, axis, angle, scale)
+NewChild(prefabEnum, pos, offset, axis, angle, scale)
 ```
 オブジェクトの子として新たにオブジェクトをスポーンさせます。
 指定できる引数はインスタンスの生成の際と同じです。
