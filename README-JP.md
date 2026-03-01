@@ -22,8 +22,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 指定できる内容は現状公式で用意されている`SpawnObject`の引数と同様です。<br>
 また、`undefined`を指定することで「空オブジェクト」をスポーンさせることも可能です。
 この機能は主に後述するオブジェクトの親子関係を設定する際に使用できます。
-
-<br>
+<br><br>
 
 `pos: mod.Vector`:<br>
 オブジェクトをスポーンさせる位置を指定します。
