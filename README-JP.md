@@ -1,4 +1,6 @@
 # bf6-MultiObjectsTransform
+[*Here is the English description of this repository.]()
+
 このスクリプトはBF6 Portalでのオブジェクトの移動/任意軸での回転や、それらを合成した運動をサポートします。
 さらに、他のオブジェクトとの親子関係を設定してオブジェクトを生成することで複合オブジェクトを作成し、複数のオブジェクトを効率的に動かすことが可能です。
 
