@@ -1,31 +1,31 @@
 class RuntimeObject {
     readonly object: mod.Object | undefined;
     readonly id: number | undefined;
-    readonly Enum: mod.RuntimeSpawn_Common 
-                 | mod.RuntimeSpawn_Granite_ResidentialNorth 
-                 | mod.RuntimeSpawn_Abbasid 
-                 | mod.RuntimeSpawn_Aftermath 
-                 | mod.RuntimeSpawn_Badlands 
-                 | mod.RuntimeSpawn_Battery 
-                 | mod.RuntimeSpawn_Capstone 
-                 | mod.RuntimeSpawn_Dumbo
-                 | mod.RuntimeSpawn_Eastwood
-                 | mod.RuntimeSpawn_FireStorm
-                 | mod.RuntimeSpawn_Limestone
-                 | mod.RuntimeSpawn_Outskirts
-                 | mod.RuntimeSpawn_Tungsten
-                 | mod.RuntimeSpawn_Granite_Downtown
-                 | mod.RuntimeSpawn_Granite_Marina
-                 | mod.RuntimeSpawn_Granite_MilitaryRnD
-                 | mod.RuntimeSpawn_Granite_MilitaryStorage
-                 | mod.RuntimeSpawn_Granite_TechCenter
-                 | mod.RuntimeSpawn_Sand
-                 | undefined;
+    readonly prefabEnum: mod.RuntimeSpawn_Common 
+                       | mod.RuntimeSpawn_Granite_ResidentialNorth 
+                       | mod.RuntimeSpawn_Abbasid 
+                       | mod.RuntimeSpawn_Aftermath 
+                       | mod.RuntimeSpawn_Badlands 
+                       | mod.RuntimeSpawn_Battery 
+                       | mod.RuntimeSpawn_Capstone 
+                       | mod.RuntimeSpawn_Dumbo
+                       | mod.RuntimeSpawn_Eastwood
+                       | mod.RuntimeSpawn_FireStorm
+                       | mod.RuntimeSpawn_Limestone
+                       | mod.RuntimeSpawn_Outskirts
+                       | mod.RuntimeSpawn_Tungsten
+                       | mod.RuntimeSpawn_Granite_Downtown
+                       | mod.RuntimeSpawn_Granite_Marina
+                       | mod.RuntimeSpawn_Granite_MilitaryRnD
+                       | mod.RuntimeSpawn_Granite_MilitaryStorage
+                       | mod.RuntimeSpawn_Granite_TechCenter
+                       | mod.RuntimeSpawn_Sand
+                       | undefined;
     readonly offset: mod.Vector;
 
-    private _offsetnow: mod.Vector;
+    private _offsetNow: mod.Vector;
 
-    private _center: mod.Vector;
+    private _pos: mod.Vector;
     private _rotState: [number,number,number,number] = [1,0,0,0];
 
     private _dpos: mod.Vector = mod.CreateVector(0,0,0);
@@ -37,11 +37,11 @@ class RuntimeObject {
 
     //getter
     get pos(): mod.Vector {
-        return this._center;
+        return this._pos;
     }
 
-    get offsetnow(): mod.Vector {
-        return this._offsetnow;
+    get offsetNow(): mod.Vector {
+        return this._offsetNow;
     }
 
     get parent(): RuntimeObject | undefined {
@@ -53,38 +53,38 @@ class RuntimeObject {
     }
 
     //constructor
-    constructor(Enum: mod.RuntimeSpawn_Common 
-                    | mod.RuntimeSpawn_Granite_ResidentialNorth 
-                    | mod.RuntimeSpawn_Abbasid 
-                    | mod.RuntimeSpawn_Aftermath 
-                    | mod.RuntimeSpawn_Badlands 
-                    | mod.RuntimeSpawn_Battery 
-                    | mod.RuntimeSpawn_Capstone 
-                    | mod.RuntimeSpawn_Dumbo
-                    | mod.RuntimeSpawn_Eastwood
-                    | mod.RuntimeSpawn_FireStorm
-                    | mod.RuntimeSpawn_Limestone
-                    | mod.RuntimeSpawn_Outskirts
-                    | mod.RuntimeSpawn_Tungsten
-                    | mod.RuntimeSpawn_Granite_Downtown
-                    | mod.RuntimeSpawn_Granite_Marina
-                    | mod.RuntimeSpawn_Granite_MilitaryRnD
-                    | mod.RuntimeSpawn_Granite_MilitaryStorage
-                    | mod.RuntimeSpawn_Granite_TechCenter
-                    | mod.RuntimeSpawn_Sand
-                    | undefined, 
-                center: mod.Vector,
+    constructor(prefabEnum: mod.RuntimeSpawn_Common 
+                          | mod.RuntimeSpawn_Granite_ResidentialNorth 
+                          | mod.RuntimeSpawn_Abbasid 
+                          | mod.RuntimeSpawn_Aftermath 
+                          | mod.RuntimeSpawn_Badlands 
+                          | mod.RuntimeSpawn_Battery 
+                          | mod.RuntimeSpawn_Capstone 
+                          | mod.RuntimeSpawn_Dumbo
+                          | mod.RuntimeSpawn_Eastwood
+                          | mod.RuntimeSpawn_FireStorm
+                          | mod.RuntimeSpawn_Limestone
+                          | mod.RuntimeSpawn_Outskirts
+                          | mod.RuntimeSpawn_Tungsten
+                          | mod.RuntimeSpawn_Granite_Downtown
+                          | mod.RuntimeSpawn_Granite_Marina
+                          | mod.RuntimeSpawn_Granite_MilitaryRnD
+                          | mod.RuntimeSpawn_Granite_MilitaryStorage
+                          | mod.RuntimeSpawn_Granite_TechCenter
+                          | mod.RuntimeSpawn_Sand
+                          | undefined, 
+                pos: mod.Vector,
                 offset: mod.Vector, 
                 axis: mod.Vector,
                 angle: number,
                 scale: mod.Vector = mod.CreateVector(1,1,1)) {
-        this.Enum = Enum;
-        this._center = center;
+        this.prefabEnum = prefabEnum;
+        this._pos = pos;
         this.offset = offset;
         this._rotState = RuntimeObject.#MakeRotQ(axis,angle);
-        this._offsetnow = RuntimeObject.#QRotateVector(this.offset, this._rotState);
-        if (Enum) {
-            this.object = mod.SpawnObject(Enum, mod.Add(center,this._offsetnow), RuntimeObject.#QtoEuler(this._rotState), scale);
+        this._offsetNow = RuntimeObject.#QRotateVector(this.offset, this._rotState);
+        if (prefabEnum) {
+            this.object = mod.SpawnObject(prefabEnum, mod.Add(pos,this._offsetNow), RuntimeObject.#QtoEuler(this._rotState), scale);
             if (this.object) this.id = mod.GetObjId(this.object);
         } else { //Empty Object.
             this.object = undefined;
@@ -93,62 +93,9 @@ class RuntimeObject {
     }
 
     //class method
-    newChild(Enum: mod.RuntimeSpawn_Common 
-                 | mod.RuntimeSpawn_Granite_ResidentialNorth 
-                 | mod.RuntimeSpawn_Abbasid 
-                 | mod.RuntimeSpawn_Aftermath 
-                 | mod.RuntimeSpawn_Badlands 
-                 | mod.RuntimeSpawn_Battery 
-                 | mod.RuntimeSpawn_Capstone 
-                 | mod.RuntimeSpawn_Dumbo
-                 | mod.RuntimeSpawn_Eastwood
-                 | mod.RuntimeSpawn_FireStorm
-                 | mod.RuntimeSpawn_Limestone
-                 | mod.RuntimeSpawn_Outskirts
-                 | mod.RuntimeSpawn_Tungsten
-                 | mod.RuntimeSpawn_Granite_Downtown
-                 | mod.RuntimeSpawn_Granite_Marina
-                 | mod.RuntimeSpawn_Granite_MilitaryRnD
-                 | mod.RuntimeSpawn_Granite_MilitaryStorage
-                 | mod.RuntimeSpawn_Granite_TechCenter
-                 | mod.RuntimeSpawn_Sand
-                 | undefined, 
-             center: mod.Vector,
-             offset: mod.Vector, 
-             axis: mod.Vector,
-             angle: number,
-             scale: mod.Vector = mod.CreateVector(1,1,1)): RuntimeObject {
-        const pCenter = this._effCenter();
-        const pRotState = this._effRotState();
-        const child = new RuntimeObject(Enum,
-                                        mod.Add(pCenter,RuntimeObject.#QRotateVector(center,pRotState)),
-                                        offset,
-                                        mod.CreateVector(0,1,0),
-                                        0,
-                                        scale);
-        child._parent = this;
-        this._children.add(child);
-        child._dQrot = RuntimeObject.#QProduct(RuntimeObject.#MakeRotQ(RuntimeObject.#QRotateVector(axis,pRotState),angle),pRotState);
-        child._isTransform = true;
-        child.ApplyTransform();
-
-        return child;
-    }
-
-    Remove() {
-        const children = [...this._children];
-        for (const child of children) child.Remove();
-
-        if (this.object) mod.UnspawnObject(this.object);
-        if (this._parent) this._parent._children.delete(this);
-        
-        this._children.clear();
-        this._parent = undefined;
-    }
-
-    Move(delta: mod.Vector) {
-        let world_dpos = delta;
-        if (this._parent) world_dpos = RuntimeObject.#QRotateVector(delta,this._parent._effRotState());
+    Move(dpos: mod.Vector) {
+        let world_dpos = dpos;
+        if (this._parent) world_dpos = RuntimeObject.#QRotateVector(dpos,this._parent._effRotState());
         this._dpos = mod.Add(this._dpos,world_dpos);
         this._isTransform = true;
 
@@ -156,20 +103,20 @@ class RuntimeObject {
         this._children.forEach(obj => obj.Move(RuntimeObject.#QRotateVector(world_dpos,[pqw,-pqx,-pqy,-pqz])));
     }
 
-    QRotation(axis: mod.Vector, angle: number, rotCent: mod.Vector = this._effCenter()) {
+    QRotation(axis: mod.Vector, angle: number, rotCenter: mod.Vector = this._effPos()) {
         let world_axis = axis;
         if (this._parent) world_axis = RuntimeObject.#QRotateVector(axis,this._parent._effRotState());
         const [dqw,dqx,dqy,dqz] = RuntimeObject.#MakeRotQ(world_axis,angle);
         this._dQrot = RuntimeObject.#QProduct([dqw,dqx,dqy,dqz],this._dQrot);
 
-        const diffCenter = mod.Subtract(this._effCenter(),rotCent)
-        const dpos = mod.Subtract(RuntimeObject.#QRotateVector(diffCenter,[dqw,dqx,dqy,dqz]),diffCenter)
+        const distanceCenter = mod.Subtract(this._effPos(),rotCenter)
+        const dpos = mod.Subtract(RuntimeObject.#QRotateVector(distanceCenter,[dqw,dqx,dqy,dqz]),distanceCenter)
         this._dpos = mod.Add(this._dpos,dpos);
 
         this._isTransform = true;
 
         const [pqw,pqx,pqy,pqz] = this._effRotState();
-        this._children.forEach(obj => obj.QRotation(RuntimeObject.#QRotateVector(world_axis,[pqw,-pqx,-pqy,-pqz]),angle,rotCent));
+        this._children.forEach(obj => obj.QRotation(RuntimeObject.#QRotateVector(world_axis,[pqw,-pqx,-pqy,-pqz]),angle,rotCenter));
     }
 
     ApplyTransform () {
@@ -187,12 +134,12 @@ class RuntimeObject {
 
                 const transform = mod.CreateTransform(pos,rot);
                 mod.SetObjectTransform(this.object,transform);
-                this._center = mod.Subtract(pos,newoffset);
+                this._pos = mod.Subtract(pos,newoffset);
             } else {
-                this._center = mod.Add(this._center,this._dpos);
+                this._pos = mod.Add(this._pos,this._dpos);
             }
             this._rotState = [fqw,fqx,fqy,fqz];
-            this._offsetnow = newoffset;
+            this._offsetNow = newoffset;
             
 
             this._dpos = mod.CreateVector(0,0,0);
@@ -202,9 +149,62 @@ class RuntimeObject {
         this._children.forEach(obj => obj.ApplyTransform());
     }
 
+    NewChild(prefabEnum: mod.RuntimeSpawn_Common 
+                       | mod.RuntimeSpawn_Granite_ResidentialNorth 
+                       | mod.RuntimeSpawn_Abbasid 
+                       | mod.RuntimeSpawn_Aftermath 
+                       | mod.RuntimeSpawn_Badlands 
+                       | mod.RuntimeSpawn_Battery 
+                       | mod.RuntimeSpawn_Capstone 
+                       | mod.RuntimeSpawn_Dumbo
+                       | mod.RuntimeSpawn_Eastwood
+                       | mod.RuntimeSpawn_FireStorm
+                       | mod.RuntimeSpawn_Limestone
+                       | mod.RuntimeSpawn_Outskirts
+                       | mod.RuntimeSpawn_Tungsten
+                       | mod.RuntimeSpawn_Granite_Downtown
+                       | mod.RuntimeSpawn_Granite_Marina
+                       | mod.RuntimeSpawn_Granite_MilitaryRnD
+                       | mod.RuntimeSpawn_Granite_MilitaryStorage
+                       | mod.RuntimeSpawn_Granite_TechCenter
+                       | mod.RuntimeSpawn_Sand
+                       | undefined, 
+             pos: mod.Vector,
+             offset: mod.Vector, 
+             axis: mod.Vector,
+             angle: number,
+             scale: mod.Vector = mod.CreateVector(1,1,1)): RuntimeObject {
+        const parentPos = this._effPos();
+        const parentRotState = this._effRotState();
+        const child = new RuntimeObject(prefabEnum,
+                                        mod.Add(parentPos,RuntimeObject.#QRotateVector(pos,parentRotState)),
+                                        offset,
+                                        mod.CreateVector(0,1,0),
+                                        0,
+                                        scale);
+        child._parent = this;
+        this._children.add(child);
+        child._dQrot = RuntimeObject.#QProduct(RuntimeObject.#MakeRotQ(RuntimeObject.#QRotateVector(axis,parentRotState),angle),parentRotState);
+        child._isTransform = true;
+        child.ApplyTransform();
+
+        return child;
+    }
+
+    Remove() {
+        const children = [...this._children];
+        for (const child of children) child.Remove();
+
+        if (this.object) mod.UnspawnObject(this.object);
+        if (this._parent) this._parent._children.delete(this);
+        
+        this._children.clear();
+        this._parent = undefined;
+    }
+
     //In-class functions
-    private _effCenter (): mod.Vector {
-        return mod.Add(this._center, this._dpos);
+    private _effPos (): mod.Vector {
+        return mod.Add(this._pos, this._dpos);
     }
 
     private _effRotState (): [number,number,number,number] {
