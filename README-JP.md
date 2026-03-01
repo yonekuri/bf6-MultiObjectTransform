@@ -9,7 +9,8 @@
 [MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## 機能
-このスクリプトではRuntimeObjectクラスを追加します。
+このスクリプトではRuntimeObjectクラスのみを追加します。
+
 以下のように引数を指定してクラスのインスタンスを生成すると、ゲーム内にもオブジェクトがスポーンします。
 ```typescript
 let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
