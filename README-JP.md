@@ -23,11 +23,11 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 また、`undefined`を指定することで「空オブジェクト」をスポーンさせることも可能です。
 この機能は主に後述するオブジェクトの親子関係を設定する際に使用できます。
 
-<br><br>
+<br>
 `pos: mod.Vector`:<br>
 オブジェクトをスポーンさせる位置を指定します。
 
-<br><br>
+<br>
 `offset: mod.Vector`:<br>
 スポーンさせるオブジェクトの位置のオフセットを設定します。<br>
 この設定は主にオブジェクトの回転を行う際に重要です。<br>
@@ -35,7 +35,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 これは`SpawnObject`などを使用してオブジェクトを回転させた際に角を中心に回転することを意味し、板の中心などを軸とした回転は公式の関数では不可能です。<br>
 `RuntimeSpawn_Common.FiringRange_Floor_01`の例では`offset=mod.CreateVector(-10.25,0,-10.25)`と指定すると後述する`QRotation`などによる回転の中心が板の中心として変更されます。
 
-<br><br>
+<br>
 `axis: mod.Vector, angle: nuber`:<br>
 2つの引数でオブジェクトの初期姿勢を指定します。<br>
 これはデフォルトの姿勢からの任意軸での回転という形で設定します。<br>
@@ -43,7 +43,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 例えば、`axis=mod.CreateVector(0,1,0), angle=Math.PI/3`を指定した場合、オブジェクトはy軸を中心にデフォルトから30度回転した状態でスポーンします。
 > ⚠️回転軸にゼロベクトル`axis=mod.CreateVector(0,0,0)`を指定した場合コンソールに警告が表示され、回転が無効化された状態でオブジェクトがスポーンします。
 
-<br><br>
+<br>
 `scale: mod.Vector`:<br>
 オブジェクトのスケールを指定します。<br>
 この引数は省略可能であり、省略した場合にはオブジェクトのデフォルトのスケールである`scale=mod.CreateVector(1,1,1)`が指定されます。
