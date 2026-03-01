@@ -99,7 +99,7 @@ ApplyTransform()
 <br>
 
 ```typescript
-NewChild(prefabEnum, pos, offset, axis, angle, scale)
+NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 ```
 オブジェクトの子として新たにオブジェクトをスポーンさせます。<br>
 指定できる引数はインスタンスの生成の際と同じです。
