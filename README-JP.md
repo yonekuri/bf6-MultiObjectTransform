@@ -7,7 +7,7 @@
 この機能を使用していただけた場合は教えていただけると喜んで見に行きます。
 
 ## 使い方
-[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。<br>
+[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## 機能
 このスクリプトでは`RuntimeObject`クラスのみを追加します。<br>
@@ -96,8 +96,6 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale)
 Remove()
 ```
 オブジェクトを削除します。
-
-<br>
 
 ## オブジェクトの親子関係
 `NewChild`を使用することでオブジェクトの親子関係を指定することができます。<br>
