@@ -84,7 +84,7 @@ QRotation(axis, angle, rotCenter)
 回転を反映するためには後述する`ApplyTransform`をこのメソッドが実行された後に呼ぶ必要があります。
 * `axis: mod.Vector`: オブジェクトの回転軸を指定します
 * `angle: number`: オブジェクトの回転角を指定します
-また
+<br>また
 
 <br>
 
