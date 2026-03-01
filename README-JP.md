@@ -51,26 +51,27 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```typescript
 Move(dpos)
 ```
-
+<br><br>
 
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
-
+<br><br>
 
 ```typescript
 ApplyTransform()
 ```
+
 <br><br>
 
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale)
-```<br>
+```
 オブジェクトの子として新たにオブジェクトをスポーンさせます。
 指定できる引数はインスタンスの生成の際と同じです。
 ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**で指定します。
 詳しい使い方は後述します。
-
+<br><br>
 
 ```typescript
 Remove()
