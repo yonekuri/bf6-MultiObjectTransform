@@ -1,4 +1,4 @@
-# bf6-MultiObjectsTransform
+# bf6-MultiObjectTransform
 [※日本語の解説はこちらです](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/README-JP.md)
 
 This script supports relative transforms for objects within the BF6 Portal.
