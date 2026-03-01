@@ -67,17 +67,20 @@ let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.Create
 Move(dpos)
 ```
 
-<br><br>
+<br>
+
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
 
-<br><br>
+<br>
+
 ```typescript
 ApplyTransform()
 ```
 
-<br><br>
+<br>
+
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale)
 ```
@@ -86,7 +89,8 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale)
 ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**で指定します。
 詳しい使い方は後述します。
 
-<br><br>
+<br>
+
 ```typescript
 Remove()
 ```
