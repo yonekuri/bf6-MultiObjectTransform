@@ -39,18 +39,30 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 
 
 ## クラスメソッド
-`Move(dpos)`
+```
+Move(dpos)
+```
 
 
-'QRotation(axis, angle, rotCenter)'
+```
+QRotation(axis, angle, rotCenter)
+```
 
 
-'ApplyTransform()'
+```
+ApplyTransform()
+```
 
 
-'newChild(prefabEnum, pos, offset, axis, angle, scale)'
+```
+newChild(prefabEnum, pos, offset, axis, angle, scale)
+```
+オブジェクトの子として新たにオブジェクトをスポーンさせます。
+指定できる引数はインスタンスの生成の際と同じです。
 
 
-'Remove()'
+```
+Remove()
+```
 
 ## オブジェクトの親子関係
