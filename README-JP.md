@@ -1,4 +1,4 @@
-# bf6-MultiObjectsTransform
+# bf6-MultiObjectTransform
 [*Here is the English description of this repository.](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/README.md)
 
 このスクリプトはBF6 Portalでのオブジェクトの移動/任意軸での回転や、それらを合成した運動をサポートします。
