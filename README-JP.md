@@ -54,6 +54,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 > ⚠️現在のBattlefield 6のバージョンでは公式で用意されている`SetObjectTransform`関数や`MoveObject`関数などを利用してスケールを変更したオブジェクトを移動すると、オブジェクトの当たり判定のスケールはそのままに、見た目のスケールだけがデフォルトに戻ってしまうというバグが存在しています。<br>
 そのため現状ではこの引数を使用することはおすすめしません。
 
+<br>
 
 ## メソッド
 `RuntimeObject`クラスには5つのメソッドが存在します。<br>
@@ -95,6 +96,8 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale)
 Remove()
 ```
 オブジェクトを削除します。
+
+<br>
 
 ## オブジェクトの親子関係
 `NewChild`を使用することでオブジェクトの親子関係を指定することができます。<br>
