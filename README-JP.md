@@ -86,7 +86,7 @@ QRotation(axis, angle, rotCenter)
 * `angle: number`: 回転角を指定します。
 
 また、回転は通常スポーン時に`offset`で指定したオブジェクトの原点を中心に回転しますが、追加の引数`rotCenter`を指定することで、任意の場所を中心とした回転に変更できます。
-* `rotCenter: mod:Vector`: 回転軸が通る場所を任意で指定します。この引数は省略可能です。
+* `rotCenter: mod:Vector`: 回転の中心点を任意で指定します。この引数は省略可能です。
 
 <br>
 
