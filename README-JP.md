@@ -25,7 +25,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 
 <br>
 
-・`pos: mod.Vector`:<br>
+* `pos: mod.Vector`:<br>
 オブジェクトをスポーンさせる位置を指定します。
 
 <br>
