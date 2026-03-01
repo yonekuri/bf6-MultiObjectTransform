@@ -42,6 +42,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 `axis`で回転軸、`angle`でラジアンでの回転角の指定を行います。`angle`に正の値を指定した場合は軸に対して左回転、負の値を指定した場合は右回転を行います。<br>
 例えば、`axis=mod.CreateVector(0,1,0), angle=Math.PI/3`を指定した場合、オブジェクトはy軸を中心にデフォルトから30度回転した状態でスポーンします。
 > ⚠️回転軸にゼロベクトル`axis=mod.CreateVector(0,0,0)`を指定した場合コンソールに警告が表示され、回転が無効化された状態でオブジェクトがスポーンします。
+
 <br><br>
 
 `scale: mod.Vector`:<br>
