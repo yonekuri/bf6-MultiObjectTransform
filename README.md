@@ -29,3 +29,30 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```
 The meaning of each argument is as follows.
 
+* `prefabEnum`:<br>
+Specify the object to spawn.
+The available parameters are the same as those currently provided for the official `SpawnObject` function.<br>
+Additionally, specifying `undefined` allows you to spawn an “empty object”.
+This feature is primarily used when setting object parent-child relationships, as described later.
+
+<br>
+
+* `pos: mod.Vector`:<br>
+Specify the position where objects are spawned.
+
+<br>
+
+* `offset: mod.Vector`:<br>
+Set the offset for the position of spawned objects.<br>
+This setting is primarily important when rotating objects.<br>
+For example, `RuntimeSpawn_Common.FiringRange_Floor_01` is a standard 20.5×20.5 plane-type object, but the object's origin point in-game is set at the corner of the plane.
+This means that when rotating an object using functions like `RotateObject`, it rotates around its corner.
+Rotating around the center of a plane is not possible using the official functions.<br>
+In this example, specifying `offset=mod.CreateVector(-10.25,0,-10.25)` changes the center of rotation for `QRotation`, as described later, to the center of the plane.
+<p align="center">
+<img width="547" height="322" alt="figure1" src="https://github.com/user-attachments/assets/a44f80ea-03b6-4430-9b3b-5825e87e1698" />
+</p>
+
+<br>
+
+* `axis: mod.Vector, angle: nuber`:<br>
