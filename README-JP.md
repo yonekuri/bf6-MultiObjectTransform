@@ -10,7 +10,13 @@
 [MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## サンプルコード
-[MOT_Sample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MOT_Sample.ts "スクリプト")
+[MOT_Sample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MOT_Sample.ts "スクリプト")を使用することで機能を試すことが可能です。
+
+このサンプルコードではエイムを行いながらジャンプすることで視線の先に立方体が出現します。<br>
+しゃがむことで立方体は以下の運動を同時に行います。
+* エイムで指定した方向への移動（コード58行目で指定）
+* エイムで指定した軸を中心にその場で回転（コード59行目で指定）
+* 呼び出したプレイヤーを中心に回転（コード60行目で指定）
 
 ## 機能
 このスクリプトでは`RuntimeObject`クラスのみを追加します。<br>
