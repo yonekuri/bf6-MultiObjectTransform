@@ -141,12 +141,13 @@ Remove()
 ```typescript
 const pos = mod.Add(eyePosition,mod.Multiply(facingDirection,20));
 let obj = new RuntimeObject(undefined, pos, mod.CreateVector(0,0,0), mod.CreateVector(1,0,0), 0); //Create Parent Empty Object.
+const prefabEnum = mod.RuntimeSpawn_Common.FiringRange_Floor_01;
 const offset = mod.CreateVector(-10.25,0,-10.25);
-obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(     0, 10.25,     0), offset, mod.CreateVector(0,1,0),          0);
-obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(     0,     0, 10.25), offset, mod.CreateVector(1,0,0),  Math.PI/2);
-obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(     0,     0,-10.25), offset, mod.CreateVector(1,0,0), -Math.PI/2);
-obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(     0,-10.25,     0), offset, mod.CreateVector(1,0,0),    Math.PI);
-obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(-10.25,     0,     0), offset, mod.CreateVector(0,0,1),  Math.PI/2);
-obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector( 10.25,     0,     0), offset, mod.CreateVector(0,0,1), -Math.PI/2);
+obj.NewChild(prefabEnum, mod.CreateVector(     0, 10.25,     0), offset, mod.CreateVector(0,1,0),          0);
+obj.NewChild(prefabEnum, mod.CreateVector(     0,     0, 10.25), offset, mod.CreateVector(1,0,0),  Math.PI/2);
+obj.NewChild(prefabEnum, mod.CreateVector(     0,     0,-10.25), offset, mod.CreateVector(1,0,0), -Math.PI/2);
+obj.NewChild(prefabEnum, mod.CreateVector(     0,-10.25,     0), offset, mod.CreateVector(1,0,0),    Math.PI);
+obj.NewChild(prefabEnum, mod.CreateVector(-10.25,     0,     0), offset, mod.CreateVector(0,0,1),  Math.PI/2);
+obj.NewChild(prefabEnum, mod.CreateVector( 10.25,     0,     0), offset, mod.CreateVector(0,0,1), -Math.PI/2);
 ```
 
