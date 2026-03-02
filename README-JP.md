@@ -139,7 +139,7 @@ Remove()
 
 サンプルコードのような立方体を出現させたい場合は次のように実行します。
 ```typescript
-const pos = mod.Add(eyePosition,mod.Multiply(facingDirection,20));
+const pos = mod.CreateVector(0,100,0);
 let obj = new RuntimeObject(undefined, pos, mod.CreateVector(0,0,0), mod.CreateVector(1,0,0), 0); //Create Parent Empty Object.
 const prefabEnum = mod.RuntimeSpawn_Common.FiringRange_Floor_01;
 const offset = mod.CreateVector(-10.25,0,-10.25);
