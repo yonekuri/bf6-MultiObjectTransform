@@ -1,7 +1,7 @@
 # bf6-MultiObjectTransform
 [※日本語の解説はこちらです](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/README-JP.md)
 
-This script supports moving objects and rotating them around any axis within the BF6 Portal, as well as combining these motions.
+This script supports moving objects and rotating them around arbitrary axis within the BF6 Portal, as well as combining these motions.
 Furthermore, by creating composite objects through parent-child relationships with other objects, you can efficiently manage multiple objects.<br>
 ![movie1](https://github.com/user-attachments/assets/547a08e6-6d3e-495f-9512-9b3a43ade3f4)
 ![movie2](https://github.com/user-attachments/assets/746ad1b1-8aa3-4610-9405-345af69e7aeb)
@@ -56,3 +56,22 @@ In this example, specifying `offset=mod.CreateVector(-10.25,0,-10.25)` changes t
 <br>
 
 * `axis: mod.Vector, angle: nuber`:<br>
+Specify the initial pose of the object using two arguments.<br>
+This is set as rotation around arbitrary axis from the default pose.<br>
+Specify the rotation axis with `axis` and the rotation angle in radians with `angle`.
+Specifying a positive value for `angle` performs a counterclockwise rotation relative to the axis, while specifying a negative value performs a clockwise rotation.<br>
+For example, when you specify `axis=mod.CreateVector(0,1,0), angle=Math.PI/3`, the object will spawn rotated 30 degrees from the default position around the y-axis.
+> ⚠️If you specify the zero vector `axis=mod.CreateVector(0,0,0)` for the rotation axis, a warning will appear in the console, and the object will spawn with rotation disabled.
+
+<br>
+
+* `scale: mod.Vector`:<br>
+Specify the scale of the object.<br>
+This argument is optional.
+If omitted, the object's default scale, `scale=mod.CreateVector(1,1,1)`, is specified.
+> ⚠️In the current version of Battlefield 6, there is a bug where moving an object whose scale has been altered using official functions like `SetObjectTransform` or `MoveObject` causes only the visual scale to revert to default, while the object's collision scale remains unchanged.<br>
+> Therefore, I do not recommend using this argument at this time.
+
+<br>
+
+## Method
