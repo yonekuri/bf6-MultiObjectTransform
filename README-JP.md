@@ -140,7 +140,7 @@ Remove()
 サンプルコードのような立方体を出現させたい場合は次のように実行します。
 ```typescript
 const pos = mod.Add(eyePosition,mod.Multiply(facingDirection,20));
-let obj = new RuntimeObject(undefined, pos, mod.CreateVector(0,0,0), mod.CreateVector(1,0,0), Math.PI/4); //Create Parent Empty Object.
+let obj = new RuntimeObject(undefined, pos, mod.CreateVector(0,0,0), mod.CreateVector(1,0,0), 0); //Create Parent Empty Object.
 const offset = mod.CreateVector(-10.25,0,-10.25);
 obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(     0, 10.25,     0), offset, mod.CreateVector(0,1,0),          0);
 obj.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(     0,     0, 10.25), offset, mod.CreateVector(1,0,0),  Math.PI/2);
