@@ -38,7 +38,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 `RuntimeSpawn_Common.FiringRange_Floor_01`の例では`offset=mod.CreateVector(-10.25,0,-10.25)`と指定すると後述する`QRotation`などによる回転の中心が板の中心として変更されます。
 <img width="1094" height="644" alt="figure1" src="https://github.com/user-attachments/assets/a44f80ea-03b6-4430-9b3b-5825e87e1698" />
 
-<br>
+<br><br>
 
 * `axis: mod.Vector, angle: nuber`:<br>
 2つの引数でオブジェクトの初期姿勢を指定します。<br>
