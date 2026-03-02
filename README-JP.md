@@ -69,7 +69,7 @@ obj.ApplyTransform();
 ```
 各メソッドの説明は以下の通りです。
 
-###Move
+### Move
 ```typescript
 Move(dpos)
 ```
@@ -80,7 +80,7 @@ Move(dpos)
 
 <br>
 
-###QRotation
+### QRotation
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
@@ -95,7 +95,7 @@ QRotation(axis, angle, rotCenter)
 
 <br>
 
-###ApplyTransform
+### ApplyTransform
 ```typescript
 ApplyTransform()
 ```
@@ -104,7 +104,7 @@ ApplyTransform()
 
 <br>
 
-###NewChild
+### NewChild
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 ```
@@ -115,7 +115,7 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 
 <br>
 
-###Remove
+### Remove
 ```typescript
 Remove()
 ```
