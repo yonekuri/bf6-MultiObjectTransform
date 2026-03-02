@@ -62,7 +62,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ## メソッド
 `RuntimeObject`クラスには5つのメソッドが存在します。<br>
 メソッドは以下のように使用します。
-```
+```typescript
 let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(-10.25,0,-10.25), mod.CreateVector(0,1,0), 0);
 obj.Move(mod.CreateVector(10,0,0));
 obj.ApplyTransform();
