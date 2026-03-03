@@ -86,35 +86,41 @@ The descriptions of each property are as follows.
 
 #### object
 `object: mod.Object | undefined`:
-
+Get the object itself.<br>
+If the instance is an empty object, it returns `undefined`.
 
 #### id
 `id: number | undefined`: 
-
+Get the object's ID.<br>
+If the instance is an empty object, it returns `undefined`.
 
 #### prefabEnum
 `prefabEnum`: 
-
+Get the prefabEnum of the specified specified at the time of instance creation.<br>
+If the instance is an empty object, it returns `undefined`.
 
 #### offset
 `offset: mod.Vector`:
-
+Get the offset of an object, specified at the time of instance creation.
 
 #### pos
 `pos: mod.Vector`:
-
+Get the **rotation center coordinates** of the object.
 
 #### offsetNow
 `offsetNow: mod.Vector`:
-
+Get the current offset of the object.<br>
+This is the vector obtained by rotating the offset according to the object's pose.
 
 #### parent
 `parent: RuntimeObject | undefied`:
-
+Get the parent of the object.<br>
+If no parent exists, it returns `undefined`.
 
 #### children
 `children: Set<RuntimeObject>`:
-
+Get the children of the object.<br>
+Children are retrieved as a `Set` in TypeScript.
 
 ### Method
 `RuntimeObject` class has five methods.<br>
