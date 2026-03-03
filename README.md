@@ -85,20 +85,36 @@ let pos = obj.pos;
 The descriptions of each property are as follows.
 
 #### object
+`object: mod.Object | undefined`:
+
 
 #### id
+`id: number | undefined`: 
+
 
 #### prefabEnum
+`prefabEnum`: 
+
 
 #### offset
+`offset: mod.Vector`:
+
 
 #### pos
+`pos: mod.Vector`:
+
 
 #### offsetNow
+`offsetNow: mod.Vector`:
+
 
 #### parent
+`parent: RuntimeObject | undefied`:
+
 
 #### children
+`children: Set<RuntimeObject>`:
+
 
 ### Method
 `RuntimeObject` class has five methods.<br>
