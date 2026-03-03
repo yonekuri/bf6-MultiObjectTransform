@@ -81,40 +81,40 @@ let pos = obj.pos;
 各プロパティの説明は以下の通りです。
 
 #### object
-`object: mod.Object | undefined`:
+`object: mod.Object | undefined`: <br>
 オブジェクト本体を取得します。
 インスタンスが空オブジェクトの場合には`undefined`となります。
 
 #### id
-`id: number | undefined`: 
+`id: number | undefined`: <br>
 オブジェクトのIDを取得します。
 インスタンスが空オブジェクトの場合には`undefined`となります。
 
 #### prefabEnum
-`prefabEnum`: 
+`prefabEnum`: <br>
 スポーン時に指定したオブジェクトのprefabEnumを取得します。
 インスタンスが空オブジェクトの場合には`undefined`となります。
 
 #### offset
-`offset: mod.Vector`:
+`offset: mod.Vector`: <br>
 スポーン時に指定したオブジェクトのオフセットを取得します。
 
 #### pos
-`pos: mod.Vector`:
+`pos: mod.Vector`: <br>
 オブジェクトの**回転中心の座標**を取得します。
 
 #### offsetNow
-`offsetNow: mod.Vector`:
+`offsetNow: mod.Vector`: <br>
 オブジェクトの現在のオフセットを取得します。
 これはスポーン時に指定したオフセットベクトルがオブジェクトの姿勢に従って回転したものです。
 
 #### parent
-`parent: RuntimeObject | undefined`:
+`parent: RuntimeObject | undefined`: <br>
 自オブジェクトの親を取得します。
 親が存在しない場合は`undefined`となります。
 
 #### children
-`children: Set<RuntimeObject>`:
+`children: Set<RuntimeObject>`: <br>
 自オブジェクトの子を取得します。
 子はTypescriptにおける`Set`として取得されます。
 
