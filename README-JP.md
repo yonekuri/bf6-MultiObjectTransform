@@ -76,7 +76,7 @@ let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
 ```typescript
 let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(-10.25,0,-10.25), mod.CreateVector(0,1,0), 0);
 let object = obj.object;
-let pos = obj.pos;
+let pos = obj.worldPos;
 ```
 各プロパティの説明は以下の通りです。
 
@@ -105,7 +105,7 @@ let pos = obj.pos;
 
 #### localPos
 `localPos: mod.Vector`: <br>
-親のローカル座標系におけるオブジェクトの**回転中心の座標**を取得します。
+親のローカル座標系におけるオブジェクトの**回転中心の座標**を取得します。<br>
 親が存在しない場合はworldPosと同じ値です。
 
 #### parent
