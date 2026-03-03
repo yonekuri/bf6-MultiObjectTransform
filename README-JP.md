@@ -92,7 +92,7 @@ Move(dpos)
 * `dpos: mod.Vector`: オブジェクトの移動量を指定します。
 <br>
 
-### QRotation
+#### QRotation
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
@@ -106,7 +106,7 @@ QRotation(axis, angle, rotCenter)
 * `rotCenter: mod:Vector`: 回転の中心点を任意で指定します。この引数は省略可能です。
 <br>
 
-### ApplyTransform
+#### ApplyTransform
 ```typescript
 ApplyTransform()
 ```
@@ -114,7 +114,7 @@ ApplyTransform()
 例えば`Move`を使用してオブジェクトを徐々に移動させるような場合、`Ongoing`の中でこのメソッドを常に実行し続けると指示された移動が毎フレームオブジェクトに反映されるようになります。
 <br>
 
-### NewChild
+#### NewChild
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 ```
@@ -124,13 +124,13 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 親子関係の詳しい使い方は後述します。
 <br>
 
-### Remove
+#### Remove
 ```typescript
 Remove()
 ```
 オブジェクトを削除します。<br>
 
-## オブジェクトの親子関係
+### オブジェクトの親子関係
 `NewChild`を使用することでオブジェクトの親子関係を指定することができます。<br>
 これはうまく使えば複数のオブジェクトの移動や回転を容易にします。
 
