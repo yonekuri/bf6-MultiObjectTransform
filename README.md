@@ -76,7 +76,9 @@ If omitted, the object's default scale, `scale=mod.CreateVector(1,1,1)`, is spec
 
 <br>
 
-## Method
+### 
+
+### Method
 `RuntimeObject` class has five methods.<br>
 The method is used as follows.
 ```typescript
@@ -86,7 +88,7 @@ obj.ApplyTransform();
 ```
 The descriptions of each method are as follows.
 
-### Move
+#### Move
 ```typescript
 Move(dpos)
 ```
@@ -96,7 +98,7 @@ To reflect the movement, you must call `ApplyTransform`, described later, after 
 * `dpos: mod.Vector`: Specify the amount by which the object is moved.
 <br>
 
-### QRotation
+#### QRotation
 ```typescript
 QRotation(axis, angle, rotCenter)
 ```
@@ -110,7 +112,7 @@ Additionally, rotation typically centers around the object's origin specified by
 * `rotCenter: mod:Vector`: Specify the rotation center point arbitrarily. This argument is optional.
 <br>
 
-### ApplyTransform
+#### ApplyTransform
 ```typescript
 ApplyTransform()
 ```
@@ -118,7 +120,7 @@ Reflect the movement and rotation of the object previously specified by `Move` a
 For example, if you keep calling `Move` in `Ongoing`, the object will gradually move by the specified amount every frame.
 <br>
 
-### NewChild
+#### NewChild
 ```typescript
 NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 ```
@@ -128,13 +130,13 @@ Note, however, `pos, offset, axis` are specified in the **local coordinate of th
 Detailed usage of parent-child relationships will be described later.
 <br>
 
-### Remove
+#### Remove
 ```typescript
 Remove()
 ```
 Remove the object.<br>
 
-## Parent-child relationships
+### Parent-child relationships
 Using `NewChild` allows to specify the parent-child relationship between objects.<br>
 This makes it easy to move and rotate multiple objects when used effectively.
 
