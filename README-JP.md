@@ -166,7 +166,8 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 ```
 オブジェクトの子として新たにオブジェクトをスポーンさせます。<br>
 指定できる引数はインスタンスの生成の際と同じです。
-ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**での指定になります。
+ただし、`pos, offset, axis`は**親オブジェクトのローカル座標系**での指定になります。<br>
+生成したRuntimeObjectを戻り値として返します。<br>
 親子関係の詳しい使い方は後述します。
 <br>
 
