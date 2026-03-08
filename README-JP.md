@@ -108,6 +108,15 @@ let pos = obj.worldPos;
 親のローカル座標系におけるオブジェクトの**回転中心の座標**を取得します。<br>
 親が存在しない場合はworldPosと同じ値です。
 
+### effWorldPos
+`effWorldPos: mod.Vector`: <br>
+**MoveやQRotationによって指示された移動や回転も反映した**ワールド座標におけるオブジェクトの回転中心の座標を取得します。
+
+### effLocalPos
+`effLocalPos: mod.Vector`: <br>
+**MoveやQRotationによって指示された移動や回転も反映した**親のローカル座標系におけるオブジェクトの回転中心の座標を取得します。<br>
+親が存在しない場合はeffWorldPosと同じ値です。
+
 #### parent
 `parent: RuntimeObject | undefined`: <br>
 自オブジェクトの親を取得します。<br>
@@ -148,8 +157,8 @@ QRotation(axis, angle, rotCenter)
 * `axis: mod.Vector`: 回転軸を指定します。
 * `angle: number`: 回転角を指定します。
 
-また、回転は通常スポーン時に`offset`で指定したオブジェクトの原点を中心に回転しますが、追加の引数`rotCenter`を指定することで、任意の場所を中心とした回転に変更できます。
-* `rotCenter: mod:Vector`: 回転の中心点を任意で指定します。この引数は省略可能です。
+また、回転は通常スポーン時に`offset`で指定したオブジェクトの原点を中心に回転しますが、追加の引数`rotCenter`を指定することで、任意のワールド座標を中心とした回転に変更できます。
+* `rotCenter: mod:Vector`: 回転の中心点を**ワールド座標系で**指定します。この引数は省略可能です。
 <br>
 
 #### ApplyTransform
@@ -175,7 +184,40 @@ NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
 ```typescript
 Remove()
 ```
-オブジェクトを削除します。<br>
+オブジェクトを削除します。
+<br>
+
+#### LocalToWorldVector
+```typescript
+LocalToWorldVector(vector)
+```
+オブジェクトのローカル座標系でのベクトルをワールド座標系に変換します。<br>
+* `vector: mod.Vector`: 変換前のオブジェクトのローカル座標系でのベクトルを指定します。
+<br>
+
+#### WorldToLocalVector
+```typescript
+WorldToLocalVector(vector)
+```
+ワールド座標系でのベクトルをオブジェクトのローカル座標系に変換します。<br>
+* `vector: mod.Vector`: 変換前のワールド座標系でのベクトルを指定します。
+<br>
+
+#### EffLocalToWorldVector
+```typescript
+EffLocalToWorldVector(vector)
+```
+**MoveやQRotationによって指示された移動や回転も反映した**オブジェクトのローカル座標系でのベクトルをワールド座標系に変換します。<br>
+* `vector: mod.Vector`: 変換前の**MoveやQRotationによって指示された移動や回転も反映した**オブジェクトのローカル座標系でのベクトルを指定します。
+<br>
+
+#### EffWorldToLocalVector
+```typescript
+EffWorldToLocalVector(vector)
+```
+ワールド座標系でのベクトルを**MoveやQRotationによって指示された移動や回転も反映した**オブジェクトのローカル座標系に変換します。<br>
+* `vector: mod.Vector`: 変換前のワールド座標系でのベクトルを指定します。
+<br>
 
 ### オブジェクトの親子関係
 `NewChild`を使用することでオブジェクトの親子関係を指定することができます。<br>
