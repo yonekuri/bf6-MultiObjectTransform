@@ -112,6 +112,15 @@ Get the **rotation center coordinates** of the object in world coordinates.
 Get the **rotation center coordinates** of the object in the parent's local coordinates.<br>
 If no parent exists, it has the same value as worldPos.
 
+#### effWorldPos
+`effWorldPos: mod.Vector`: <br>
+Get the rotation center coordinates of the object **reflecting the movement and rotation specified by Move and QRotation** in world coordinates.
+
+#### effLocalPos
+`effLocalPos: mod.Vector`: <br>
+Get the rotation center coordinates of the object **reflecting the movement and rotation specified by Move and QRotation** in the parent's local coordinates.<br>
+If no parent exists, it has the same value as effWorldPos.
+
 #### parent
 `parent: RuntimeObject | undefied`:
 Get the parent of the object.<br>
@@ -152,8 +161,8 @@ To reflect the rotation, you must call `ApplyTransform`, described later, after 
 * `axis: mod.Vector`: Specify the rotation axis.
 * `angle: number`: Specify the rotation angle.
 
-Additionally, rotation typically centers around the object's origin specified by `offset` during spawn, but specifying the additional argument `rotCenter`, you can change the center of rotation to the arbitrary position.
-* `rotCenter: mod:Vector`: Specify the rotation center point arbitrarily. This argument is optional.
+Additionally, rotation typically centers around the object's origin specified by `offset` during spawn, but specifying the additional argument `rotCenter`, you can change the center of rotation to the arbitrary world coordinate.
+* `rotCenter: mod:Vector`: Specify the rotation center point **in the world coordinates**. This argument is optional.
 <br>
 
 #### ApplyTransform
@@ -179,7 +188,40 @@ Detailed usage of parent-child relationships will be described later.
 ```typescript
 Remove()
 ```
-Remove the object.<br>
+Remove the object.
+<br>
+
+#### LocalToWorldVector
+```typescript
+LocalToWorldVector(vector)
+```
+Convert a vector in the object's local coordinates to the world coordinates.<br>
+* `vector: mod.Vector`: Specify the vector in the object's local coordinates before transformation.
+<br>
+
+#### WorldToLocalVector
+```typescript
+WorldToLocalVector(vector)
+```
+Convert a vector in the world coordinates to the object's local coordinates.<br>
+* `vector: mod.Vector`: Specify the vector in the world coordinates before transformation.
+<br>
+
+#### EffLocalToWorldVector
+```typescript
+EffLocalToWorldVector(vector)
+```
+Convert a vector in the object's local coordinates, **reflecting any movement or rotation indicated by **Move or QRotation**, to the world coordinates.
+* `vector: mod.Vector`: Specify the vector in the object's local coordinates, **reflecting any movement or rotation indicated by **Move or QRotation**, before transformation.
+<br>
+
+#### EffWorldToLocalVector
+```typescript
+EffWorldToLocalVector(vector)
+```
+Convert a vector in the world coordinates to the object's local coordinates, **reflecting any movement or rotation indicated by **Move or QRotation**.
+* `vector: mod.Vector`: Specify the vector in the world coordinates before transformation.
+<br>
 
 ### Parent-child relationships
 Using `NewChild` allows to specify the parent-child relationship between objects.<br>
