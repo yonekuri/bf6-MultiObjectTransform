@@ -119,25 +119,28 @@ let camera = TransformableObject.createExistingChild(mod.GetFixedCamera(1));
 ```
 ####  createRuntimeChild
 ```typescript
-createRuntimeChild(prefabEnum, position, rotation, offset, scale): TransformableObject
-createRuntimeChild(prefabEnum, position, angle, axis, offset, scale): TransformableObject
+createRuntimeChild(prefabEnum, position, rotation, offset, scale): TransformableObject | undefined
+createRuntimeChild(prefabEnum, position, angle, axis, offset, scale): TransformableObject | undefined
 ```
 新たに対象の子オブジェクトとしてRuntimeオブジェクトを生成します。  
+対象が既に削除されている場合は返り値が`undefined`になります。
 
 
 ####  createEmptyChild
 ```typescript
-createEmptyChild(potision, rotation, scale): TransformableObject
-createEmptyChild(position, angle, axis, scale): TransformableObject
+createEmptyChild(potision, rotation, scale): TransformableObject | undefined
+createEmptyChild(position, angle, axis, scale): TransformableObject | undefined
 ```
-新たに対象の子オブジェクトとしてEmptyオブジェクトを生成します。
+新たに対象の子オブジェクトとしてEmptyオブジェクトを生成します。  
+対象が既に削除されている場合は返り値が`undefined`になります。
 
 
 ####  createExistingChild
 ```typescript
-createExistingChild(object, offset, scale): TransformableObject
+createExistingChild(object, offset, scale): TransformableObject | undefined
 ```
-既にゲーム内に存在するオブジェクトを対象の子オブジェクトとして管理できるようにします。   
+既にゲーム内に存在するオブジェクトを対象の子オブジェクトとして管理できるようにします。  
+対象が既に削除されている場合は返り値が`undefined`になります。  
 
 
 ### オブジェクトの管理
@@ -228,20 +231,37 @@ let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRang
 let object = obj.object;
 let pos = obj.worldPos;
 ```
-object
-id
-prefabEnum
-offset
-worldPos
-localPos
-effectiveWorldPos
-effectiveLocalPos
-worldRot
-localRot
-effectiveWorldRot
-effectiveLocalRot
-worldScale
-localScale
-parent
-children
-deleted
+#### object
+
+#### id
+
+#### prefabEnum
+
+#### offset
+
+#### worldPos
+
+#### localPos
+
+#### effectiveWorldPos
+
+#### effectiveLocalPos
+
+#### worldRot
+
+#### localRot
+
+#### effectiveWorldRot
+
+#### effectiveLocalRot
+
+#### worldScale
+
+#### localScale
+
+#### parent
+
+#### children
+
+#### deleted
+
