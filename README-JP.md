@@ -84,7 +84,7 @@ createEmptyObject(potision, rotation, scale): TransformableObject
 createEmptyObject(position, angle, axis, scale): TransformableObject
 ```
 新たに空のTransformableObjectオブジェクトを生成します。
-これはGodotにおけるNode3Dオブジェクトに対応します。
+これはGodotにおけるNode3Dオブジェクトに対応します。  
 主に複数のオブジェクトをまとめて動かす際の親オブジェクトとして使用します。
 
 
@@ -92,14 +92,38 @@ createEmptyObject(position, angle, axis, scale): TransformableObject
 ```typescript
 createExistingObject(object, offset, scale): TransformableObject
 ```
-既にゲーム内に存在するオブジェクトをTransformableObjectオブジェクトとして管理できるようにします。
+既にゲーム内に存在するオブジェクトをTransformableObjectオブジェクトとして管理できるようにします。  
 **_object_**  
 対象のオブジェクトを`mod.Object`で指定します。  
 
 
 #### 子オブジェクトの生成
-対象のオブジェクトの子オブジェクトとしてTransformableObjectオブジェクトを生成します。
-子オブジェクトの仕様は基本的にGodotを参考にしています。
+対象のオブジェクトの子オブジェクトとしてTransformableObjectオブジェクトを生成します。  
+子オブジェクトの仕様は基本的にGodotを参考にしています。  
+各引数の意味ははオブジェクト生成関数と同様です。  
+ただし、Godotにおける子オブジェクトの仕様に基づいて、入力された**_potision_**, **_rotation_**, **_angle_**, **_axis_**は親のローカル座標系における値として解釈されることに注意してください。  
+* **createRuntimeChild**
+```typescript
+createRuntimeChild(prefabEnum, position, rotation, offset, scale): TransformableObject
+createRuntimeChild(prefabEnum, position, angle, axis, offset, scale): TransformableObject
+```
+新たに子オブジェクトとしてRuntimeオブジェクトを生成します。  
+
+
+* **createEmptyChild**
+```typescript
+createEmptyChild(potision, rotation, scale): TransformableObject
+createEmptyChild(position, angle, axis, scale): TransformableObject
+```
+新たに子オブジェクトとしてEmptyオブジェクトを生成します。
+
+
+* **createExistingObject**
+```typescript
+createExistingObject(object, offset, scale): TransformableObject
+```
+既にゲーム内に存在するオブジェクトを対象の子オブジェクトとして管理できるようにします。   
+
 
 #### オブジェクトの管理
 
