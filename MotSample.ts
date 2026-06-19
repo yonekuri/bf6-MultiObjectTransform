@@ -26,39 +26,67 @@ export function OngoingPlayer(eventPlayer: mod.Player) {
             pD.axis = mod.Normalize(facingDirection);
 
             if (jumpedNow) {
-                if (pD.object) pD.object.Remove();
+                if (pD.object) pD.object.remove();
 
-                const pos = mod.Add(eyePosition,mod.Multiply(facingDirection,20));
-                pD.object = new RuntimeObject(undefined,
-                                              pos, mod.CreateVector(0,0,0),
-                                              mod.CreateVector(1,0,0), Math.PI/4); //Create Parent Empty Object.
+                //Create Parent Empty Object.
+                const pos = mod.Add(eyePosition,mod.Multiply(facingDirection,50));
+                pD.object = TransformableObject.createEmptyObject(
+                    pos,
+                    mod.CreateVector(0,0,0)
+                );
+
+                //Create Children Empty Objects.
                 const offset = mod.CreateVector(-10.25,0,-10.25);
-                pD.object.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01,
-                                   mod.CreateVector(0,10.25,0), offset,
-                                   mod.CreateVector(0,1,0), 0);
-                pD.object.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01,
-                                   mod.CreateVector(0,0,10.25), offset,
-                                   mod.CreateVector(1,0,0), Math.PI/2);
-                pD.object.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01,
-                                   mod.CreateVector(0,0,-10.25), offset,
-                                   mod.CreateVector(1,0,0), -Math.PI/2);
-                pD.object.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01,
-                                   mod.CreateVector(0,-10.25,0), offset,
-                                   mod.CreateVector(1,0,0), Math.PI);
-                pD.object.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01,
-                                   mod.CreateVector(-10.25,0,0), offset,
-                                   mod.CreateVector(0,0,1), Math.PI/2);
-                pD.object.NewChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01,
-                                   mod.CreateVector(10.25,0,0), offset,
-                                   mod.CreateVector(0,0,1), -Math.PI/2);
+                pD.object.createRuntimeChild(
+                    mod.RuntimeSpawn_Common.FiringRange_Floor_01,
+                    mod.CreateVector(0,10.25,0),
+                    0,
+                    mod.CreateVector(0,1,0),
+                    offset
+                )
+                pD.object.createRuntimeChild(
+                    mod.RuntimeSpawn_Common.FiringRange_Floor_01,
+                    mod.CreateVector(0,0,10.25),
+                    Math.PI/2,
+                    mod.CreateVector(1,0,0),
+                    offset
+                )
+                pD.object.createRuntimeChild(
+                    mod.RuntimeSpawn_Common.FiringRange_Floor_01,
+                    mod.CreateVector(0,0,-10.25),
+                    -Math.PI/2,
+                    mod.CreateVector(1,0,0),
+                    offset
+                )
+                pD.object.createRuntimeChild(
+                    mod.RuntimeSpawn_Common.FiringRange_Floor_01,
+                    mod.CreateVector(0,-10.25,0),
+                    Math.PI,
+                    mod.CreateVector(1,0,0),
+                    offset
+                )
+                pD.object.createRuntimeChild(
+                    mod.RuntimeSpawn_Common.FiringRange_Floor_01,
+                    mod.CreateVector(-10.25,0,0),
+                    Math.PI/2,
+                    mod.CreateVector(0,0,1),
+                    offset
+                )
+                pD.object.createRuntimeChild(
+                    mod.RuntimeSpawn_Common.FiringRange_Floor_01,
+                    mod.CreateVector(10.25,0,0),
+                    -Math.PI/2,
+                    mod.CreateVector(0,0,1),
+                    offset
+                )
             }
         }
         if (isCrouching) {
             if (pD.object) {
-                pD.object.Move(mod.Multiply(pD.axis,0.1)); //Translation
-                pD.object.QRotation(pD.axis,Math.PI/180); //Rotation about the center of gravity
-                pD.object.QRotation(mod.CreateVector(0,1,0),Math.PI/180,mod.GetSoldierState(eventPlayer,mod.SoldierStateVector.GetPosition)); //Rotation centered on a point other than the center of gravity (here, the player)
-                pD.object.ApplyTransform(); //Application of Translation and Rotation
+                pD.object.move(mod.Multiply(pD.axis,0.1)); //Translation
+                pD.object.rotate(Math.PI/180,pD.axis); //Rotation about the center of gravity
+                pD.object.rotate(Math.PI/180,mod.CreateVector(0,1,0),mod.GetSoldierState(eventPlayer,mod.SoldierStateVector.GetPosition)); //Rotation centered on a point other than the center of gravity (here, the player)
+                pD.object.applyTransform(); //Application of Translation and Rotation
             }
         }
     }
@@ -67,7 +95,7 @@ export function OngoingPlayer(eventPlayer: mod.Player) {
 class PlayerDatas {
     player: mod.Player;
 
-    object: RuntimeObject | undefined;
+    object: TransformableObject | undefined;
     axis: mod.Vector;
 
     constructor(eventplayer: mod.Player) {
@@ -91,337 +119,954 @@ class PlayerDatas {
     }
 
     static remove(playerId: number) {
-        PlayerDatas.#allPlayers[playerId].object?.Remove();
+        PlayerDatas.#allPlayers[playerId].object?.remove();
         delete PlayerDatas.#allPlayers[playerId];
     }
 }
 
-class RuntimeObject {
-    readonly object: mod.Object | undefined;
-    readonly id: number | undefined;
-    readonly prefabEnum: mod.RuntimeSpawn_Common 
-                       | mod.RuntimeSpawn_Granite_ResidentialNorth 
-                       | mod.RuntimeSpawn_Abbasid 
-                       | mod.RuntimeSpawn_Aftermath 
-                       | mod.RuntimeSpawn_Badlands 
-                       | mod.RuntimeSpawn_Battery 
-                       | mod.RuntimeSpawn_Capstone 
-                       | mod.RuntimeSpawn_Dumbo
-                       | mod.RuntimeSpawn_Eastwood
-                       | mod.RuntimeSpawn_FireStorm
-                       | mod.RuntimeSpawn_Limestone
-                       | mod.RuntimeSpawn_Outskirts
-                       | mod.RuntimeSpawn_Tungsten
-                       | mod.RuntimeSpawn_Granite_Downtown
-                       | mod.RuntimeSpawn_Granite_Marina
-                       | mod.RuntimeSpawn_Granite_MilitaryRnD
-                       | mod.RuntimeSpawn_Granite_MilitaryStorage
-                       | mod.RuntimeSpawn_Granite_TechCenter
-                       | mod.RuntimeSpawn_Sand
-                       | undefined;
-    readonly offset: mod.Vector;
+export namespace Quaternions {
+    export type Quaternion = {
+        w: number;
+        x: number;
+        y: number;
+        z: number;
+    };
+
+    export function normalize(q: Quaternion): Quaternion {
+        const norm = Math.sqrt(q.w ** 2 + q.x ** 2 + q.y ** 2 + q.z ** 2);
+
+        if (norm == 0) {
+            mod.SendErrorReport(mod.Message('The norm of the quaternion is zero.'));
+            return { w: 1, x: 0, y: 0, z: 0 };
+        }
+
+        return {
+            w: q.w / norm,
+            x: q.x / norm,
+            y: q.y / norm,
+            z: q.z / norm,
+        };
+    }
+
+    export function inverse(q: Quaternion): Quaternion {
+        return {
+            w: q.w,
+            x: -q.x,
+            y: -q.y,
+            z: -q.z,
+        };
+    }
+
+    export function product(q1: Quaternion, q2: Quaternion): Quaternion {
+        const w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
+        const x = q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y;
+        const y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x;
+        const z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w;
+
+        return normalize({ w, x, y, z });
+    }
+
+    export function rotateVector(vector: mod.Vector, q: Quaternion): mod.Vector {
+        const vecX = mod.XComponentOf(vector);
+        const vecY = mod.YComponentOf(vector);
+        const vecZ = mod.ZComponentOf(vector);
+
+        const x =
+            (q.w ** 2 + q.x ** 2 - q.y ** 2 - q.z ** 2) * vecX +
+            2 * (q.x * q.y - q.w * q.z) * vecY +
+            2 * (q.x * q.z + q.w * q.y) * vecZ;
+
+        const y =
+            2 * (q.x * q.y + q.w * q.z) * vecX +
+            (q.w ** 2 - q.x ** 2 + q.y ** 2 - q.z ** 2) * vecY +
+            2 * (q.y * q.z - q.w * q.x) * vecZ;
+
+        const z =
+            2 * (q.x * q.z - q.w * q.y) * vecX +
+            2 * (q.y * q.z + q.w * q.x) * vecY +
+            (q.w ** 2 - q.x ** 2 - q.y ** 2 + q.z ** 2) * vecZ;
+
+        return mod.CreateVector(x, y, z);
+    }
+
+    export function make(axis: mod.Vector, angle: number): Quaternion {
+        if (mod.DotProduct(axis, axis) == 0) {
+            mod.SendErrorReport(
+                mod.Message('Rotation has been disabled because a zero vector was specified for the rotation axis.')
+            );
+
+            return { w: 1, x: 0, y: 0, z: 0 };
+        }
+
+        const normalizedAxis = mod.Normalize(axis);
+        const axisX = mod.XComponentOf(normalizedAxis);
+        const axisY = mod.YComponentOf(normalizedAxis);
+        const axisZ = mod.ZComponentOf(normalizedAxis);
+
+        const w = Math.cos(angle / 2);
+        const x = axisX * Math.sin(angle / 2);
+        const y = axisY * Math.sin(angle / 2);
+        const z = axisZ * Math.sin(angle / 2);
+
+        return { w, x, y, z };
+    }
+
+    export function toEuler(q: Quaternion): mod.Vector {
+        const nQ = normalize(q);
+
+        const x = Math.atan2(2 * (nQ.y * nQ.z + nQ.w * nQ.x), nQ.w ** 2 - nQ.x ** 2 - nQ.y ** 2 + nQ.z ** 2);
+        const y = Math.asin(Math.max(-1, Math.min(1, 2 * (nQ.w * nQ.y - nQ.x * nQ.z))));
+        const z = Math.atan2(2 * (nQ.x * nQ.y + nQ.w * nQ.z), nQ.w ** 2 + nQ.x ** 2 - nQ.y ** 2 - nQ.z ** 2);
+
+        return mod.CreateVector(x, y, z);
+    }
+
+    export function fromEuler(euler: mod.Vector): Quaternion {
+        const eulerX = mod.XComponentOf(euler);
+        const eulerY = mod.YComponentOf(euler);
+        const eulerZ = mod.ZComponentOf(euler);
+
+        const cx = Math.cos(eulerX / 2);
+        const cy = Math.cos(eulerY / 2);
+        const cz = Math.cos(eulerZ / 2);
+        const sx = Math.sin(eulerX / 2);
+        const sy = Math.sin(eulerY / 2);
+        const sz = Math.sin(eulerZ / 2);
+
+        const w = cx * cy * cz + sx * sy * sz;
+        const x = sx * cy * cz - cx * sy * sz;
+        const y = cx * sy * cz + sx * cy * sz;
+        const z = cx * cy * sz - sx * sy * cz;
+
+        return { w, x, y, z };
+    }
+}
+
+export class TransformableObject {
+    public static createRuntimeObject(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        angle: number, axis: mod.Vector, scale?: number
+    ): TransformableObject;
+    public static createRuntimeObject(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        angle: number, axis: mod.Vector, offset: mod.Vector, scale?: number
+    ): TransformableObject;
+    public static createRuntimeObject(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        rotation: mod.Vector, scale?: number
+    ): TransformableObject;
+    public static createRuntimeObject(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        rotation: mod.Vector, offset: mod.Vector, scale?: number
+    ): TransformableObject;
+    
+    public static createRuntimeObject(
+        prefabEnum: TransformableObject.PrefabEnum,
+        position: mod.Vector,
+        arg1: number | mod.Vector,
+        arg2?: number | mod.Vector,
+        arg3?: number | mod.Vector,
+        arg4?: number,
+    ): TransformableObject {
+        let rotation: Quaternions.Quaternion;
+        let offset: mod.Vector = mod.CreateVector(0, 0, 0);
+        let scale: number = 1;
+        if (typeof arg1 === "number") {
+            rotation = Quaternions.make(arg2 as mod.Vector, arg1);
+            if (typeof arg3 === "number") {
+                scale = arg3;
+            } else if (arg3 !== undefined) {
+                offset = arg3;
+                if (typeof arg4 === "number") {
+                    scale = arg4;
+                }
+            }
+        } else {
+            rotation = Quaternions.fromEuler(arg1);
+            if (typeof arg2 === "number") {
+                scale = arg2;
+            } else if (arg2 !== undefined) {
+                offset = arg2;
+                if (typeof arg3 === "number") {
+                    scale = arg3;
+                }
+            }
+        }
+
+        if (scale <= 0) {
+            mod.SendErrorReport(
+                mod.Message("createRuntimeObject: Scale must be greater than zero.")
+            );
+            scale = 1;
+        }
+
+        return new TransformableObject({ position, offset, rotation, scale, prefabEnum });
+    }
+
+    public static createExistingObject(
+        object: mod.Object,
+        scale?: number
+    ): TransformableObject;
+    public static createExistingObject(
+        object: mod.Object,
+        offset: mod.Vector,  
+        scale?: number
+    ): TransformableObject;
+
+    public static createExistingObject(
+        object: mod.Object,
+        arg1?: number | mod.Vector,  
+        arg2?: number
+    ): TransformableObject {
+        let offset: mod.Vector = mod.CreateVector(0, 0, 0);
+        let scale: number = 1;
+        if (typeof arg1 === "number") {
+            scale = arg1;
+        } else if (arg1 !== undefined) {
+            offset = arg1;
+            if (typeof arg2 === "number") {
+                scale = arg2;
+            }
+        }
+
+        if (scale <= 0) {
+            mod.SendErrorReport(
+                mod.Message("createExistingObject: Scale must be greater than zero.")
+            );
+            scale = 1;
+        }
+
+        return new TransformableObject({ object, offset, scale });
+    }
+
+    public static createEmptyObject(
+        position: mod.Vector,
+        angle: number, axis: mod.Vector, scale?: number
+    ): TransformableObject;
+    public static createEmptyObject(
+        position: mod.Vector,
+        rotation: mod.Vector, scale?: number
+    ): TransformableObject;
+
+    public static createEmptyObject(
+        position: mod.Vector,
+        arg1: number | mod.Vector,
+        arg2?: number | mod.Vector,
+        arg3?: number
+    ): TransformableObject {
+        let rotation: Quaternions.Quaternion;
+        let scale: number = 1;
+        if (typeof arg1 === "number") {
+            rotation = Quaternions.make(arg2 as mod.Vector, arg1);
+            if (arg3 !== undefined) {
+                scale = arg3;
+            }
+        } else {
+            rotation = Quaternions.fromEuler(arg1);
+            if (arg2 !== undefined) {
+                scale = arg2 as number;
+            }
+        }
+
+        if (scale <= 0) {
+            mod.SendErrorReport(
+                mod.Message("createEmptyObject: Scale must be greater than zero.")
+            );
+            scale = 1;
+        }
+
+        return new TransformableObject({ position, rotation, scale });
+    }
+
+    public readonly object?: mod.Object;
+    public readonly id?: number;
+    public readonly prefabEnum?: TransformableObject.PrefabEnum;
+    public readonly offset: mod.Vector;
 
     private _pos: mod.Vector;
-    private _rotState: [number,number,number,number];
+    private _rotState: Quaternions.Quaternion;
+    private _scale: number;
 
-    private _dpos: mod.Vector = mod.CreateVector(0,0,0);
-    private _dQrot: [number,number,number,number] = [1,0,0,0];
+    private _dpos: mod.Vector = mod.CreateVector(0, 0, 0);
+    private _dQrot: Quaternions.Quaternion = { w: 1, x: 0, y: 0, z: 0 };
     private _isTransform: boolean = false;
 
-    private _effPos: mod.Vector;
-    private _effRotState: [number,number,number,number];
+    private _effectivePos: mod.Vector;
+    private _effectiveRotState: Quaternions.Quaternion;
 
-    private _parent: RuntimeObject | undefined;
-    private _children = new Set<RuntimeObject>();
+    private _parent?: TransformableObject;
+    private _children = new Set<TransformableObject>();
 
-    //getter
-    get worldPos(): mod.Vector {
+    private _deleted: boolean = false;
+
+    public get worldPos(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("worldPos: This object has been deleted.")
+            );
+            return undefined;
+        }
+
         return this._pos;
     }
 
-    get localPos(): mod.Vector {
-        if (this.parent) {
-            const localPos = mod.Subtract(this._pos,this.parent._pos);
-            return this.parent.WorldToLocalVector(localPos);
+    public get localPos(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("localPos: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        const parent = this._parent;
+        if (parent) {
+            const localPos = mod.Subtract(this._pos, parent._pos);
+            return parent.worldToLocalVector(localPos);
         } else {
             return this._pos;
         }
     }
 
-    get effWorldPos(): mod.Vector {
-        return this._effPos;
+    public get effectiveWorldPos(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("effectiveWorldPos: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        return this._effectivePos;
     }
 
-    get effLocalPos(): mod.Vector {
-        if (this.parent) {
-            const effLocalPos = mod.Subtract(this._effPos,this.parent._effPos);
-            return this.parent.EffWorldToLocalVector(effLocalPos);
+    public get effectiveLocalPos(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("effectiveLocalPos: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        const parent = this._parent;
+        if (parent) {
+            const effectiveLocalPos = mod.Subtract(this._effectivePos, parent._effectivePos);
+            return parent.effectiveWorldToLocalVector(effectiveLocalPos);
         } else {
-            return this._effPos;
+            return this._effectivePos;
         }
     }
 
-    get parent(): RuntimeObject | undefined {
+    public get worldRot(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("worldRot: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        return Quaternions.toEuler(this._rotState);
+    }
+
+    public get localRot(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("localRot: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        const parent = this._parent;
+        if (parent) {
+            const localRot = Quaternions.product(Quaternions.inverse(parent._rotState),this._rotState);
+            return Quaternions.toEuler(localRot);
+        } else {
+            return Quaternions.toEuler(this._rotState);
+        }
+    }
+
+    public get effectiveWorldRot(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("effectiveWorldRot: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        return Quaternions.toEuler(this._effectiveRotState);
+    }
+
+    public get effectiveLocalRot(): mod.Vector | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("effectiveLocalRot: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        const parent = this._parent;
+        if (parent) {
+            const effectiveLocalRot = Quaternions.product(Quaternions.inverse(parent._effectiveRotState),this._effectiveRotState);
+            return Quaternions.toEuler(effectiveLocalRot);
+        } else {
+            return Quaternions.toEuler(this._effectiveRotState);
+        }
+    }
+
+    public get worldScale(): number | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("worldScale: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        return this._scale;
+    }
+
+    public get localScale(): number | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("localScale: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        const parent = this._parent;
+        if (parent) {
+            return this._scale / parent._scale;
+        } else {
+            return this._scale;
+        }
+    }
+
+    public get parent(): TransformableObject | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("parent: This object has been deleted.")
+            );
+            return undefined;
+        }
+
         return this._parent;
     }
 
-    get children(): Set<RuntimeObject> {
+    public get children(): Set<TransformableObject> | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("children: This object has been deleted.")
+            );
+            return undefined;
+        }
+
         return new Set(this._children);
     }
 
-    //constructor
-    constructor(prefabEnum: mod.RuntimeSpawn_Common 
-                          | mod.RuntimeSpawn_Granite_ResidentialNorth 
-                          | mod.RuntimeSpawn_Abbasid 
-                          | mod.RuntimeSpawn_Aftermath 
-                          | mod.RuntimeSpawn_Badlands 
-                          | mod.RuntimeSpawn_Battery 
-                          | mod.RuntimeSpawn_Capstone 
-                          | mod.RuntimeSpawn_Dumbo
-                          | mod.RuntimeSpawn_Eastwood
-                          | mod.RuntimeSpawn_FireStorm
-                          | mod.RuntimeSpawn_Limestone
-                          | mod.RuntimeSpawn_Outskirts
-                          | mod.RuntimeSpawn_Tungsten
-                          | mod.RuntimeSpawn_Granite_Downtown
-                          | mod.RuntimeSpawn_Granite_Marina
-                          | mod.RuntimeSpawn_Granite_MilitaryRnD
-                          | mod.RuntimeSpawn_Granite_MilitaryStorage
-                          | mod.RuntimeSpawn_Granite_TechCenter
-                          | mod.RuntimeSpawn_Sand
-                          | undefined, 
-                pos: mod.Vector,
-                offset: mod.Vector, 
-                axis: mod.Vector,
-                angle: number,
-                scale: mod.Vector = mod.CreateVector(1,1,1)) {
-        this.prefabEnum = prefabEnum;
-        this._pos = pos;
-        this.offset = offset;
-        this._rotState = RuntimeObject.#MakeRotQ(axis,angle);
-        if (prefabEnum) {
-            this.object = mod.SpawnObject(prefabEnum, mod.Add(pos,RuntimeObject.#QRotateVector(this.offset, this._rotState)), RuntimeObject.#QtoEuler(this._rotState), scale);
-            if (this.object) this.id = mod.GetObjId(this.object);
-        } else { //Empty Object.
-            this.object = undefined;
-            this.id = undefined;
+    public get deleted(): boolean {
+        return this._deleted;
+    }
+
+    private constructor(properties: TransformableObject.Properties) {
+        if ((properties as TransformableObject.RuntimeObjectProperties).prefabEnum !== undefined) {
+            const { offset, position, rotation, scale, prefabEnum } = properties as TransformableObject.RuntimeObjectProperties;
+
+            this._pos = position;
+            this._rotState = Quaternions.normalize(rotation);
+            this._scale = scale;
+            this.offset = offset;
+            this.prefabEnum = prefabEnum;
+
+            this.object = mod.SpawnObject(
+                prefabEnum,
+                mod.Add(position, Quaternions.rotateVector(mod.Multiply(offset,scale), this._rotState)),
+                Quaternions.toEuler(this._rotState),
+                mod.CreateVector(scale, scale, scale)
+            );
+
+            this.id = mod.GetObjId(this.object!);
+        } else if ((properties as TransformableObject.ExistingObjectProperties).object !== undefined) {
+            const { object, offset, scale } = properties as TransformableObject.ExistingObjectProperties;
+
+            this.object = object;
+            this.id = mod.GetObjId(object);
+            this.offset = offset;
+            this._rotState = Quaternions.fromEuler(mod.GetObjectRotation(object));
+            this._scale = scale;
+
+            this._pos = mod.Subtract(
+                mod.GetObjectPosition(object),
+                Quaternions.rotateVector(mod.Multiply(offset,scale), this._rotState)
+            );
+        } else {
+            const { position, rotation, scale } = properties as TransformableObject.EmptyObjectProperties;
+
+            this._pos = position;
+            this._rotState = Quaternions.normalize(rotation);
+            this._scale = scale;
+            this.offset = mod.CreateVector(0, 0, 0);
         }
 
-        this._effPos = pos;
-        this._effRotState = [...this._rotState] as [number,number,number,number];
+        this._effectivePos = this._pos;
+
+        this._effectiveRotState = {
+            w: this._rotState.w,
+            x: this._rotState.x,
+            y: this._rotState.y,
+            z: this._rotState.z,
+        };
     }
 
-    //class method
-    Move(dpos: mod.Vector) {
-        let moveDpos = dpos;
-        if (this._parent) moveDpos = this._parent.EffLocalToWorldVector(dpos);
-        this._dpos = mod.Add(this._dpos,moveDpos);
+    public createRuntimeChild(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        angle: number, axis: mod.Vector, scale?: number
+    ): TransformableObject | undefined;
+    public createRuntimeChild(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        angle: number, axis: mod.Vector, offset: mod.Vector, scale?: number
+    ): TransformableObject | undefined;
+    public createRuntimeChild(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        rotation: mod.Vector, scale?: number
+    ): TransformableObject | undefined;
+    public createRuntimeChild(
+        prefabEnum: TransformableObject.PrefabEnum, position: mod.Vector,
+        rotation: mod.Vector, offset: mod.Vector, scale?: number
+    ): TransformableObject | undefined;
 
-        this._UppdateEff();
-        this._isTransform = true;
+    public createRuntimeChild(
+        prefabEnum: TransformableObject.PrefabEnum,
+        position: mod.Vector,
+        arg1: number | mod.Vector,
+        arg2?: number | mod.Vector,
+        arg3?: number | mod.Vector,
+        arg4?: number,
+    ): TransformableObject | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("createRuntimeChild: This object has been deleted.")
+            );
+            return undefined;
+        }
 
-        const worldDpos = this.EffWorldToLocalVector(moveDpos);
-        this._children.forEach(obj => obj.Move(worldDpos));
-    }
-
-    QRotation(axis: mod.Vector, angle: number, rotCenter: mod.Vector = this._effPos) {
-        let rotAxis = axis;
-        if (this._parent) rotAxis = this._parent.EffLocalToWorldVector(axis);
-        const [dqw,dqx,dqy,dqz] = RuntimeObject.#MakeRotQ(rotAxis,angle);
-        this._dQrot = RuntimeObject.#QProduct([dqw,dqx,dqy,dqz],this._dQrot);
-
-        const distanceCenter = mod.Subtract(this._effPos,rotCenter);
-        const dpos = mod.Subtract(RuntimeObject.#QRotateVector(distanceCenter,[dqw,dqx,dqy,dqz]),distanceCenter);
-        this._dpos = mod.Add(this._dpos,dpos);
-
-        this._UppdateEff();
-        this._isTransform = true;
-
-        const worldRotAxis = this.EffWorldToLocalVector(rotAxis);
-        this._children.forEach(obj => obj.QRotation(worldRotAxis,angle,rotCenter));
-    }
-
-    ApplyTransform () {
-        if (this._isTransform) {
-            const centerPos = mod.Add(this._pos,this._dpos);
-            const [fqw,fqx,fqy,fqz] = RuntimeObject.#QProduct(this._dQrot,this._rotState);
-
-            if (this.object) {
-                const newoffset = RuntimeObject.#QRotateVector(this.offset,[fqw,fqx,fqy,fqz]);
-
-                const pos = mod.Add(centerPos,newoffset);
-                const rot = RuntimeObject.#QtoEuler([fqw,fqx,fqy,fqz]);
-
-                const transform = mod.CreateTransform(pos,rot);
-                mod.SetObjectTransform(this.object,transform);
+        let rotation: Quaternions.Quaternion;
+        let offset: mod.Vector = mod.CreateVector(0, 0, 0);
+        let scale: number = 1;
+        if (typeof arg1 === "number") {
+            rotation = Quaternions.make(arg2 as mod.Vector, arg1);
+            if (typeof arg3 === "number") {
+                scale = arg3;
+            } else if (arg3 !== undefined) {
+                offset = arg3;
+                if (typeof arg4 === "number") {
+                    scale = arg4;
+                }
             }
-            this._pos = centerPos;
-            this._rotState = [fqw,fqx,fqy,fqz];
-
-            this._dpos = mod.CreateVector(0,0,0);
-            this._dQrot = [1,0,0,0];
-            this._UppdateEff();
-            this._isTransform = false;
+        } else {
+            rotation = Quaternions.fromEuler(arg1);
+            if (typeof arg2 === "number") {
+                scale = arg2;
+            } else if (arg2 !== undefined) {
+                offset = arg2;
+                if (typeof arg3 === "number") {
+                    scale = arg3;
+                }
+            }
         }
-        this._children.forEach(obj => obj.ApplyTransform());
-    }
 
-    NewChild(prefabEnum: mod.RuntimeSpawn_Common 
-                       | mod.RuntimeSpawn_Granite_ResidentialNorth 
-                       | mod.RuntimeSpawn_Abbasid 
-                       | mod.RuntimeSpawn_Aftermath 
-                       | mod.RuntimeSpawn_Badlands 
-                       | mod.RuntimeSpawn_Battery 
-                       | mod.RuntimeSpawn_Capstone 
-                       | mod.RuntimeSpawn_Dumbo
-                       | mod.RuntimeSpawn_Eastwood
-                       | mod.RuntimeSpawn_FireStorm
-                       | mod.RuntimeSpawn_Limestone
-                       | mod.RuntimeSpawn_Outskirts
-                       | mod.RuntimeSpawn_Tungsten
-                       | mod.RuntimeSpawn_Granite_Downtown
-                       | mod.RuntimeSpawn_Granite_Marina
-                       | mod.RuntimeSpawn_Granite_MilitaryRnD
-                       | mod.RuntimeSpawn_Granite_MilitaryStorage
-                       | mod.RuntimeSpawn_Granite_TechCenter
-                       | mod.RuntimeSpawn_Sand
-                       | undefined, 
-             pos: mod.Vector,
-             offset: mod.Vector, 
-             axis: mod.Vector,
-             angle: number,
-             scale: mod.Vector = mod.CreateVector(1,1,1)): RuntimeObject {
-        const parentPos = this._effPos;
-        const parentRotState = this._effRotState;
-        const child = new RuntimeObject(prefabEnum,
-                                        mod.Add(parentPos,this.EffLocalToWorldVector(pos)),
-                                        offset,
-                                        mod.CreateVector(0,1,0),
-                                        0,
-                                        scale);
+        const worldPos = mod.Add(
+            this._effectivePos,
+            this.effectiveLocalToWorldVector(position)
+        );
+
+        const worldRot = Quaternions.product(
+            this._effectiveRotState,
+            Quaternions.normalize(rotation)
+        );
+
+        let worldScale: number;
+        if (scale <= 0) {
+            mod.SendErrorReport(
+                mod.Message("createRuntimeChild: Scale must be greater than zero.")
+            );
+            worldScale = 1;
+        } else {
+            worldScale = this._scale * scale;
+        }
+
+        const child = new TransformableObject({
+            position: worldPos,
+            offset,
+            rotation: worldRot,
+            scale: worldScale,
+            prefabEnum,
+        });
+
         child._parent = this;
         this._children.add(child);
-        child._dQrot = RuntimeObject.#QProduct(RuntimeObject.#MakeRotQ(this.EffLocalToWorldVector(axis),angle),parentRotState);
-        child._UppdateEff();
-        child._isTransform = true;
-        child.ApplyTransform();
 
         return child;
     }
 
-    Remove() {
-        const children = [...this._children];
-        for (const child of children) child.Remove();
+    public createExistingChild(
+        object: mod.Object,
+        scale?: number
+    ): TransformableObject | undefined;
+    public createExistingChild(
+        object: mod.Object,
+        offset: mod.Vector,  
+        scale?: number
+    ): TransformableObject | undefined;
 
-        if (this.object) mod.UnspawnObject(this.object);
-        if (this._parent) this._parent._children.delete(this);
-        
-        this._children.clear();
+    public createExistingChild(
+        object: mod.Object,
+        arg1?: number | mod.Vector,  
+        arg2?: number
+    ): TransformableObject | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("createExistingChild: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        let offset: mod.Vector = mod.CreateVector(0, 0, 0);
+        let scale: number = 1;
+        if (typeof arg1 === "number") {
+            scale = arg1;
+        } else if (arg1 !== undefined) {
+            offset = arg1;
+            if (typeof arg2 === "number") {
+                scale = arg2;
+            }
+        }
+
+        if (scale <= 0) {
+            mod.SendErrorReport(
+                mod.Message("createExistingChild: Scale must be greater than zero.")
+            );
+            scale = 1;
+        }
+
+        const child = new TransformableObject({ object, offset, scale });
+
+        child._parent = this;
+        this._children.add(child);
+
+        return child;
+    }
+
+    public createEmptyChild(
+        position: mod.Vector,
+        angle: number, axis: mod.Vector, scale?: number
+    ): TransformableObject | undefined;
+    public createEmptyChild(
+        position: mod.Vector,
+        rotation: mod.Vector, scale?: number
+    ): TransformableObject | undefined;
+
+    public createEmptyChild(
+        position: mod.Vector,
+        arg1: number | mod.Vector,
+        arg2?: number | mod.Vector,
+        arg3?: number
+    ): TransformableObject | undefined {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("createEmptyChild: This object has been deleted.")
+            );
+            return undefined;
+        }
+
+        let rotation: Quaternions.Quaternion;
+        let scale: number = 1;
+        if (typeof arg1 === "number") {
+            rotation = Quaternions.make(arg2 as mod.Vector, arg1);
+            if (arg3 !== undefined) {
+                scale = arg3;
+            }
+        } else {
+            rotation = Quaternions.fromEuler(arg1);
+            if (arg2 !== undefined) {
+                scale = arg2 as number;
+            }
+        }
+
+        const worldPos = mod.Add(
+            this._effectivePos,
+            this.effectiveLocalToWorldVector(position)
+        );
+
+        const worldRot = Quaternions.product(
+            this._effectiveRotState,
+            Quaternions.normalize(rotation)
+        );
+
+        let worldScale: number;
+        if (scale <= 0) {
+            mod.SendErrorReport(
+                mod.Message("createEmptyChild: Scale must be greater than zero.")
+            );
+            worldScale = 1;
+        } else {
+            worldScale = this._scale * scale;
+        }
+
+        const child = new TransformableObject({
+            position: worldPos,
+            rotation: worldRot,
+            scale: worldScale,
+        });
+
+        child._parent = this;
+        this._children.add(child);
+
+        return child;
+    }
+
+    public attachAsChild(newParent: TransformableObject): void {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("attachAsChild: This object has been deleted.")
+            );
+            return;
+        }
+        if (newParent._deleted) {
+            mod.SendErrorReport(
+                mod.Message("attachAsChild: The specified parent has been deleted.")
+            );
+            return;
+        }
+        if (newParent === this) {
+            mod.SendErrorReport(
+                mod.Message(
+                    "attachAsChild: An object cannot be its own parent."
+                )
+            );
+            return;
+        }
+
+        let ancestor: TransformableObject | undefined = newParent;
+        while (ancestor) {
+            if (ancestor === this) {
+                mod.SendErrorReport(
+                    mod.Message("attachAsChild: Circular parent-child relationships are not allowed.")
+                );
+                return;
+            }
+            ancestor = ancestor._parent;
+        }
+
+        if (this._parent === newParent) return;
+
+        this.detachFromParent();
+        this._parent = newParent;
+        newParent._children.add(this);
+    }
+
+    public detachFromParent(): void {
+        const parent = this._parent;
+
+        if (!parent) return;
+
+        parent._children.delete(this);
         this._parent = undefined;
     }
 
-    LocalToWorldVector(vector: mod.Vector): mod.Vector {
-        const worldVector = RuntimeObject.#QRotateVector(vector,this._rotState);
-        return worldVector
-    }
+    public remove(): void {
+        if (this._deleted) return;
 
-    WorldToLocalVector(vector: mod.Vector): mod.Vector {
-        const localVector = RuntimeObject.#QRotateVector(vector,RuntimeObject.#InverseQ(this._rotState));
-        return localVector
-    }
+        this._deleted = true;
 
-    EffLocalToWorldVector(vector: mod.Vector): mod.Vector {
-        const effWorldVector = RuntimeObject.#QRotateVector(vector,this._effRotState);
-        return effWorldVector
-    }
+        const children = [...this._children];
 
-    EffWorldToLocalVector(vector: mod.Vector): mod.Vector {
-        const effLocalVector = RuntimeObject.#QRotateVector(vector,RuntimeObject.#InverseQ(this._effRotState));
-        return effLocalVector
-    }
-
-    //In-class functions
-    private _UppdateEff () {
-        this._effPos = mod.Add(this._pos, this._dpos);
-        this._effRotState = RuntimeObject.#QProduct(this._dQrot, this._rotState);
-    }
-
-    static #QNormalize (q: readonly [number,number,number,number]): [number,number,number,number] {
-        let [qw,qx,qy,qz] = q;
-        
-        const qnorm = Math.sqrt(qw**2 + qx**2 + qy**2 + qz**2);
-        if (qnorm==0) {
-            mod.SendErrorReport(mod.Message("The norm of the quaternion is zero."));
-            return [1,0,0,0];
+        for (const child of children) {
+            child.remove();
         }
 
-        qw /= qnorm;
-        qx /= qnorm;
-        qy /= qnorm;
-        qz /= qnorm;
-        return [qw,qx,qy,qz];
-    }
+        this._children.clear();
+        this.detachFromParent();
 
-    static #InverseQ (q: readonly [number,number,number,number]): [number,number,number,number] {
-        const [qw,qx,qy,qz] = q;
-        return [qw,-qx,-qy,-qz];
-    }
-
-    static #QProduct (q1: readonly [number,number,number,number], q2: readonly [number,number,number,number]): [number,number,number,number] {
-        const [qw1,qx1,qy1,qz1] = q1;
-        const [qw2,qx2,qy2,qz2] = q2;
-
-        let qw = qw1*qw2 - qx1*qx2 - qy1*qy2 - qz1*qz2;
-        let qx = qw1*qx2 + qx1*qw2 + qy1*qz2 - qz1*qy2;
-        let qy = qw1*qy2 - qx1*qz2 + qy1*qw2 + qz1*qx2;
-        let qz = qw1*qz2 + qx1*qy2 - qy1*qx2 + qz1*qw2;
-
-        [qw,qx,qy,qz] = RuntimeObject.#QNormalize([qw,qx,qy,qz]);
-        
-        return [qw,qx,qy,qz];
-    }
-
-    static #QRotateVector (vector: mod.Vector, q: readonly [number,number,number,number]): mod.Vector {
-        const [qw,qx,qy,qz] = q;
-
-        const vecX = mod.XComponentOf(vector);
-        const vecY = mod.YComponentOf(vector);
-        const vecZ = mod.ZComponentOf(vector);
-
-        const fvecX = (qw**2 + qx**2 - qy**2 - qz**2)*vecX + 2*(qx*qy - qw*qz)*vecY + 2*(qx*qz + qw*qy)*vecZ;
-        const fvecY = 2*(qx*qy + qw*qz)*vecX + (qw**2 - qx**2 + qy**2 - qz**2)*vecY + 2*(qy*qz - qw*qx)*vecZ;
-        const fvecZ = 2*(qx*qz - qw*qy)*vecX + 2*(qy*qz + qw*qx)*vecY + (qw**2 - qx**2 - qy**2 + qz**2)*vecZ;
-
-        const newVector = mod.CreateVector(fvecX,fvecY,fvecZ);
-
-        return newVector;
-    }
-
-    static #MakeRotQ (axis: mod.Vector, angle: number): [number,number,number,number] {
-        if (mod.DotProduct(axis,axis)==0) {
-            mod.SendErrorReport(mod.Message("Rotation has been disabled because a zero vector was specified for the rotation axis."));
-            return [1,0,0,0];
+        if (
+            this.prefabEnum !== undefined &&
+            this.object !== undefined
+        ) {
+            mod.UnspawnObject(this.object);
         }
-        const naxis = mod.Normalize(axis);
-        const axisX = mod.XComponentOf(naxis);
-        const axisY = mod.YComponentOf(naxis);
-        const axisZ = mod.ZComponentOf(naxis);
-
-        const qw = Math.cos(angle/2);
-        const qx = axisX * Math.sin(angle/2);
-        const qy = axisY * Math.sin(angle/2);
-        const qz = axisZ * Math.sin(angle/2);
-
-        return [qw,qx,qy,qz];
     }
 
-    static #QtoEuler (q: readonly [number,number,number,number]): mod.Vector {
-        const [qw,qx,qy,qz] = RuntimeObject.#QNormalize(q);
+    public move(dpos: mod.Vector): void {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("move: Deleted objects cannot be transformed.")
+            );
+            return;
+        }
 
-        const eularX = Math.atan2(2*(qy*qz + qw*qx), qw**2 - qx**2 - qy**2 + qz**2);
-        const eularY = Math.asin(Math.max(-1, Math.min(1, 2 * (qw*qy - qx*qz))));
-        const eularZ = Math.atan2(2*(qx*qy + qw*qz), qw**2 + qx**2 - qy**2 - qz**2);
-        const euler = mod.CreateVector(eularX,eularY,eularZ);
-        return euler;
+        const moveDpos = this._parent ? this._parent.effectiveLocalToWorldVector(dpos) : dpos;
+
+        this._dpos = mod.Add(this._dpos, moveDpos);
+
+        this._updateEffective();
+        this._isTransform = true;
+
+        const localDpos = this.effectiveWorldToLocalVector(moveDpos);
+
+        this._children.forEach((obj) => obj.move(localDpos));
     }
+
+    public rotate(angle: number, axis: mod.Vector, rotCenter: mod.Vector = this._effectivePos): void {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("rotate: Deleted objects cannot be transformed.")
+            );
+            return;
+        }
+
+        const rotAxis = this._parent ? this._parent.effectiveLocalToWorldVector(axis) : axis;
+
+        const dQ = Quaternions.make(rotAxis, angle);
+
+        this._dQrot = Quaternions.product(dQ, this._dQrot);
+
+        const distanceCenter = mod.Subtract(this._effectivePos, rotCenter);
+
+        const dpos = mod.Subtract(Quaternions.rotateVector(distanceCenter, dQ), distanceCenter);
+
+        this._dpos = mod.Add(this._dpos, dpos);
+
+        this._updateEffective();
+        this._isTransform = true;
+
+        const localRotAxis = this.effectiveWorldToLocalVector(rotAxis);
+
+        this._children.forEach((obj) => obj.rotate(angle, localRotAxis, rotCenter));
+    }
+
+    public applyTransform(): void {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("applyTransform: Deleted objects cannot be transformed.")
+            );
+            return;
+        }
+
+        if (this._isTransform) {
+            const centerPos = mod.Add(this._pos, this._dpos);
+            const fq = Quaternions.product(this._dQrot, this._rotState);
+
+            if (this.object) {
+                const newOffset = Quaternions.rotateVector(mod.Multiply(this.offset,this._scale), fq);
+                const pos = mod.Add(centerPos, newOffset);
+                const rot = Quaternions.toEuler(fq);
+                const transform = mod.CreateTransform(pos, rot);
+
+                mod.SetObjectTransform(this.object, transform);
+            }
+
+            this._pos = centerPos;
+            this._rotState = fq;
+
+            this._dpos = mod.CreateVector(0, 0, 0);
+            this._dQrot = { w: 1, x: 0, y: 0, z: 0 };
+            this._updateEffective();
+            this._isTransform = false;
+        }
+
+        this._children.forEach((obj) => obj.applyTransform());
+    }
+
+    public localToWorldVector(vector: mod.Vector): mod.Vector {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("localToWorldVector: This object has been deleted.")
+            );
+            return mod.CreateVector(0, 0, 0);
+        }
+
+        return Quaternions.rotateVector(mod.Multiply(vector, this._scale), this._rotState);
+    }
+
+    public worldToLocalVector(vector: mod.Vector): mod.Vector {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("worldToLocalVector: This object has been deleted.")
+            );
+            return mod.CreateVector(0, 0, 0);
+        }
+        
+        return mod.Divide(Quaternions.rotateVector(vector, Quaternions.inverse(this._rotState)), this._scale);
+    }
+
+    public effectiveLocalToWorldVector(vector: mod.Vector): mod.Vector {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("effectiveLocalToWorldVector: This object has been deleted.")
+            );
+            return mod.CreateVector(0, 0, 0);
+        }
+
+        return Quaternions.rotateVector(mod.Multiply(vector, this._scale), this._effectiveRotState);
+    }
+
+    public effectiveWorldToLocalVector(vector: mod.Vector): mod.Vector {
+        if (this._deleted) {
+            mod.SendErrorReport(
+                mod.Message("effectiveWorldToLocalVector: This object has been deleted.")
+            );
+            return mod.CreateVector(0, 0, 0);
+        }
+
+        return mod.Divide(Quaternions.rotateVector(vector, Quaternions.inverse(this._effectiveRotState)), this._scale);
+    }
+
+    private _updateEffective(): void {
+        this._effectivePos = mod.Add(this._pos, this._dpos);
+        this._effectiveRotState = Quaternions.product(this._dQrot, this._rotState);
+    }
+}
+
+export namespace TransformableObject {
+    export type PrefabEnum =
+        | mod.RuntimeSpawn_Common
+        | mod.RuntimeSpawn_Abbasid
+        | mod.RuntimeSpawn_Aftermath
+        | mod.RuntimeSpawn_Badlands
+        | mod.RuntimeSpawn_Battery
+        | mod.RuntimeSpawn_Capstone
+        | mod.RuntimeSpawn_Contaminated
+        | mod.RuntimeSpawn_Dumbo
+        | mod.RuntimeSpawn_Eastwood
+        | mod.RuntimeSpawn_FireStorm
+        | mod.RuntimeSpawn_Limestone
+        | mod.RuntimeSpawn_Outskirts
+        | mod.RuntimeSpawn_Subsurface
+        | mod.RuntimeSpawn_Tungsten
+        | mod.RuntimeSpawn_Granite_Downtown
+        | mod.RuntimeSpawn_Granite_Marina
+        | mod.RuntimeSpawn_Granite_MilitaryRnD
+        | mod.RuntimeSpawn_Granite_MilitaryStorage
+        | mod.RuntimeSpawn_Granite_ResidentialNorth
+        | mod.RuntimeSpawn_Granite_TechCenter
+        | mod.RuntimeSpawn_Granite_Underground
+        | mod.RuntimeSpawn_Sand;
+
+    export type RuntimeObjectProperties = {
+        position: mod.Vector;
+        offset: mod.Vector;
+        rotation: Quaternions.Quaternion;
+        scale: number;
+        prefabEnum: PrefabEnum;
+    };
+
+    export type ExistingObjectProperties = {
+        object: mod.Object;
+        offset: mod.Vector;
+        scale: number;
+    };
+
+    export type EmptyObjectProperties = {
+        position: mod.Vector;
+        rotation: Quaternions.Quaternion;
+        scale: number;
+    };
+
+    export type Properties = RuntimeObjectProperties | ExistingObjectProperties | EmptyObjectProperties;
 }
