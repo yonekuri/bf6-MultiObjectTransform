@@ -31,17 +31,27 @@
 ライブラリで扱うTransformableObjectオブジェクトは3種類あり、それぞれに生成関数が存在します。
 * **createRuntimeObject**
 ```typescript
-createRuntimeObject(prefabEnum, position, rotation, offset, scale)
-createRuntimeObject(prefabEnum, position, angle, axis, offset, scale)
+createRuntimeObject(prefabEnum, position, rotation, offset, scale): TransformableObject
+createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): TransformableObject
 ```
 新たにTransformableObjectオブジェクトを生成します。  
- **_prefabEnum_**
-  a
+**_prefabEnum_**  
+`RuntimeSpawn_Common.FiringRange_Floor_01`などオブジェクトのprefabEnumを入力します。
+
+
+**_potision_**  
+オブジェクトの生成位置を`mod.Vector`で指定します。
+
+
+オブジェクトの初期姿勢には2通りの指定方法があります。
+
+**_rotation_**  
+オブジェクトの初期姿勢を`mod.Vector`で指定します。
 
 * **createEmptyObject**
 ```typescript
-createEmptyObject(potision, rotation, scale)
-createEmptyObject(position, angle, axis, scale)
+createEmptyObject(potision, rotation, scale): TransformableObject
+createEmptyObject(position, angle, axis, scale): TransformableObject
 ```
 新たに空のTransformableObjectオブジェクトを生成します。
 これはGodotにおけるNode3Dオブジェクトに対応します。
@@ -49,7 +59,7 @@ createEmptyObject(position, angle, axis, scale)
 
 * **createExistingObject**
 ```typescript
-createExistingObject(object, offset, scale)
+createExistingObject(object, offset, scale): TransformableObject
 ```
 既にゲーム内に存在するオブジェクトをTransformableObjectオブジェクトとして管理できるようにします。
 
