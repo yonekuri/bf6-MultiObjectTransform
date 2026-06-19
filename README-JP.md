@@ -58,7 +58,7 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 
 
 **_offset_**  
-スポーンさせるオブジェクトの位置のオフセットを設定します。（省略可能）
+スポーンさせるオブジェクトの位置のオフセットを`mod.Vector`で指定します（省略可能）。  
 この設定は主にオブジェクトの回転を行う際に重要です。   
 例えば`RuntimeSpawn_Common.FiringRange_Floor_01`は大きさ20.5×20.5の標準的な板型オブジェクトですが、ゲーム内でのオブジェクトの原点は板の角の部分に設定されています。
 これは`RotateObject`などを使用してオブジェクトを回転させた際に角を中心に回転することを意味し、板の中心などを軸とした回転は公式の関数では不可能です。  
@@ -68,6 +68,12 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 <img width="547" height="322" alt="figure1" src="https://github.com/user-attachments/assets/a44f80ea-03b6-4430-9b3b-5825e87e1698" />
 </p>
 
+
+**_scale_**  
+オブジェクトのスケールを`number`で指定します（省略可能）。  
+省略された場合は`scale=1`として扱われます。
+> ⚠️現在のBattlefield 6のバージョンでは公式で用意されている`SetObjectTransform`関数や`MoveObject`関数などを利用してスケールを変更したオブジェクトを回転させると、見た目の回転がズレるというバグが存在しています。<br>
+> そのため現状ではこの引数を使用することはおすすめしません。
 
 * **createEmptyObject**
 ```typescript
