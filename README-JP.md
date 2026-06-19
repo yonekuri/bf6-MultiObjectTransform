@@ -105,7 +105,7 @@ createExistingObject(object, offset, scale): TransformableObject
 対象オブジェクトの子オブジェクトとしてTransformableObjectオブジェクトを生成します。  
 子オブジェクトの仕様は基本的にGodotを参考にしています。  
 各引数の意味ははオブジェクト生成関数と同様です。  
-ただし、Godotにおける子オブジェクトの仕様に基づいて、**入力された_potision_, _rotation_, _angle_, _axis_は親のローカル座標系における値として解釈されることに注意してください**。  
+ただし、Godotにおける子オブジェクトの仕様に基づいて、**入力された`potision`, `rotation`, `angle`, `axis`は親のローカル座標系における値として解釈されることに注意してください**。  
 ####  createRuntimeChild
 ```typescript
 createRuntimeChild(prefabEnum, position, rotation, offset, scale): TransformableObject
