@@ -50,6 +50,9 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 **_rotation_**  
 オブジェクトの初期姿勢を`mod.Vector`で指定します。  
 `mod.SpawnObject`と同様の感覚で使用できる、Godotの値をコピーして使用できるなどのメリットがあります。  
+Godotの値をコピーする際は事前にRotation OrderをZYXに設定する必要があります。
+<img width="352" height="410" alt="image" src="https://github.com/user-attachments/assets/4c514fbe-2082-45d7-87c5-65d1c9307f3c" />
+
 2. **回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法**  
 **_angle_**  
 ラジアンでの回転角を`number`で指定します。  
@@ -98,16 +101,16 @@ createExistingObject(object, offset, scale): TransformableObject
 
 
 #### 子オブジェクトの生成
-対象のオブジェクトの子オブジェクトとしてTransformableObjectオブジェクトを生成します。  
+対象オブジェクトの子オブジェクトとしてTransformableObjectオブジェクトを生成します。  
 子オブジェクトの仕様は基本的にGodotを参考にしています。  
 各引数の意味ははオブジェクト生成関数と同様です。  
-ただし、Godotにおける子オブジェクトの仕様に基づいて、入力された**_potision_**, **_rotation_**, **_angle_**, **_axis_**は親のローカル座標系における値として解釈されることに注意してください。  
+ただし、Godotにおける子オブジェクトの仕様に基づいて、**入力された_potision_, _rotation_, _angle_, _axis_は親のローカル座標系における値として解釈されることに注意してください**。  
 * **createRuntimeChild**
 ```typescript
 createRuntimeChild(prefabEnum, position, rotation, offset, scale): TransformableObject
 createRuntimeChild(prefabEnum, position, angle, axis, offset, scale): TransformableObject
 ```
-新たに子オブジェクトとしてRuntimeオブジェクトを生成します。  
+新たに対象の子オブジェクトとしてRuntimeオブジェクトを生成します。  
 
 
 * **createEmptyChild**
@@ -115,12 +118,12 @@ createRuntimeChild(prefabEnum, position, angle, axis, offset, scale): Transforma
 createEmptyChild(potision, rotation, scale): TransformableObject
 createEmptyChild(position, angle, axis, scale): TransformableObject
 ```
-新たに子オブジェクトとしてEmptyオブジェクトを生成します。
+新たに対象の子オブジェクトとしてEmptyオブジェクトを生成します。
 
 
-* **createExistingObject**
+* **createExistingChild**
 ```typescript
-createExistingObject(object, offset, scale): TransformableObject
+createExistingChild(object, offset, scale): TransformableObject
 ```
 既にゲーム内に存在するオブジェクトを対象の子オブジェクトとして管理できるようにします。   
 
