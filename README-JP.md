@@ -44,11 +44,11 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 
 
 オブジェクトの姿勢には2通りの指定方法があります。  
-1. `SpawnObject`と同様にオイラー角で指定する方法
+1. `SpawnObject`と同様にオイラー角で指定する方法  
 **_rotation_**  
 オブジェクトの初期姿勢を`mod.Vector`で指定します。
 `SpawnObject`と同様の感覚で使用できる、Godotの値をコピーして使用できるなどのメリットがあります。  
-2. 回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法
+2. 回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法  
 **_angle_**
 回転角を`number`で指定します。  
 **_axis_**
