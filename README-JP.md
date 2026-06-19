@@ -43,10 +43,18 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 オブジェクトの生成位置を`mod.Vector`で指定します。  
 
 
-オブジェクトの初期姿勢には2通りの指定方法があります。
-1. 
+オブジェクトの姿勢には2通りの指定方法があります。  
+1. `SpawnObject`と同様にオイラー角で指定する方法
 **_rotation_**  
 オブジェクトの初期姿勢を`mod.Vector`で指定します。
+`SpawnObject`と同様の感覚で使用できる、Godotの値をコピーして使用できるなどのメリットがあります。  
+2. 回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法
+**_angle_**
+回転角を`number`で指定します。  
+**_axis_**
+回転軸を`mod.Vector`で指定します。
+
+
 
 * **createEmptyObject**
 ```typescript
