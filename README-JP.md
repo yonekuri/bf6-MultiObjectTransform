@@ -54,7 +54,7 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 **_axis_**  
 回転軸を`mod.Vector`で指定します。  
 初期姿勢はオブジェクトのデフォルトの姿勢から_axis_を中心に_angle_だけ回転させた姿勢として決定します。  
-この方法は仕組みを理解していればオイラー角よりも直感的に扱うことができます。
+この方法は仕組みを理解していればオイラー角よりも直感的に扱うことができます。  
 
 
 **_offset_**  
