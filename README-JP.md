@@ -34,7 +34,8 @@
 createRuntimeObject(prefabEnum, position, rotation, offset, scale)
 createRuntimeObject(prefabEnum, position, angle, axis, offset, scale)
 ```
-新たにTransformableObjectオブジェクトを生成します。
+新たにTransformableObjectオブジェクトを生成します。_
+_prefabEnum_
 
 * **createEmptyObject**
 ```typescript
