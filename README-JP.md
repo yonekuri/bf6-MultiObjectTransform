@@ -29,7 +29,12 @@
 ここでは主にTransformableObjectクラスに含まれるメソッドとプロパティについて説明します。
 
 ### オブジェクトの生成
-ライブラリで扱うTransformableObjectは3種類あり、それぞれに生成関数が存在します。
+ライブラリで扱うTransformableObjectは3種類あり、それぞれに生成関数が存在します。  
+オブジェクトの生成は以下のように行います。
+```typescript
+let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+let existObj = TransformableObject.createExistingObject(mod.GetSpatialObject(1));
+```
 #### createRuntimeObject
 ```typescript
 static createRuntimeObject(prefabEnum, position, rotation, offset, scale): TransformableObject
@@ -106,6 +111,12 @@ static createExistingObject(object, offset, scale): TransformableObject
 子オブジェクトの仕様は基本的にGodotを参考にしています。  
 各引数の意味ははオブジェクト生成関数と同様です（`offset`, `scale`は省略可能）。  
 ただし、Godotにおける子オブジェクトの仕様に基づいて、**入力された`potision`, `rotation`, `angle`, `axis`は親のローカル座標系における値として解釈されることに注意してください**。  
+子オブジェクトの生成は以下のように行います。
+```typescript
+let root = TransformableObject.createEmptyObject(mod.CreateVector(0,100,0), mod.CreateVector(0,0,0));
+let child = root.createRuntimeChild(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,0,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25));
+let camera = TransformableObject.createExistingChild(mod.GetFixedCamera(1));
+```
 ####  createRuntimeChild
 ```typescript
 createRuntimeChild(prefabEnum, position, rotation, offset, scale): TransformableObject
@@ -130,6 +141,17 @@ createExistingChild(object, offset, scale): TransformableObject
 
 
 ### オブジェクトの管理
+管理関数は以下のように使用します。
+```typescript
+let root = TransformableObject.createEmptyObject(mod.CreateVector(0,100,0), mod.CreateVector(0,0,0));
+let child = root.createRuntimeChild(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,0,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25));
+child.detachFromParent();
+
+let camera = TransformableObject.createExistingObject(mod.GetFixedCamera(1));
+camera.attachAsChild(root);
+
+root.remove();
+```
 #### attachAsChild
 ```typescript
 attachAsChild(newParent): void
@@ -149,6 +171,7 @@ detachFromParent(): void
 remove(): void
 ```
 対象のTransformableObjectを削除します。  
+また、対象に子オブジェクトが存在する場合、それらも再帰的に削除します。  
 ただし、対象がExistingオブジェクトの場合はオブジェクトそのものは削除されず、単にTransformableObjectの管理下から外れます。  
 `remove`後のTransformableObjectを対象としたメソッドは基本的に失敗します。
 
