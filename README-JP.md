@@ -29,12 +29,14 @@
 ### メソッド
 #### オブジェクトの生成
 ライブラリで扱うTransformableObjectオブジェクトは3種類あり、それぞれに生成関数が存在します。
+* createRuntimeObject
 ```typescript
 createRuntimeObject(prefabEnum, position, rotation, offset, scale)
 createRuntimeObject(prefabEnum, position, angle, axis, offset, scale)
 ```
 新たにTransformableObjectオブジェクトを生成します。
 
+* createEmptyObject
 ```typescript
 createEmptyObject(potision, rotation, scale)
 createEmptyObject(position, angle, axis, scale)
@@ -43,6 +45,7 @@ createEmptyObject(position, angle, axis, scale)
 これはGodotにおけるNode3Dオブジェクトに対応します。
 主に複数のオブジェクトをまとめて動かす際の親オブジェクトとして使用します。
 
+* createExistingObject
 ```typescript
 createExistingObject(object, offset, scale)
 ```
