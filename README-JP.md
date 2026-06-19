@@ -135,7 +135,7 @@ createExistingChild(object, offset, scale): TransformableObject
 attachAsChild(newParent): void
 ```
 対象を指定したオブジェクトの子オブジェクトに設定します。
-* `newParent: TransformableObject`
+* `newParent: TransformableObject`  
 親オブジェクトを指定します。  
 
 #### detachFromParent
