@@ -222,14 +222,31 @@ applyTransform(): void
 また、オブジェクトが子オブジェクトを持つ場合、それらにも再帰的に実行を行います。
 
 ### ベクトル変換
-オブジェクトのローカル座標系を用いてベクトルを変換する操作を行います。
+オブジェクトのローカル座標系を用いてベクトルを変換する操作を行います。  
+メソッドは以下のように使用します。
+```typescript
+let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+obj.localToWorldVector(mod.CreateVector(20,0,0));
+```
 #### localToWorldVector
+```typescript
+localToWorldVector(vector): mod.Vector
+```
 
 #### worldToLocalVector
+```typescript
+worldToLocalVector(vector): mod.Vector
+```
 
 #### effectiveLocalToWorldVector
+```typescript
+effectiveLocalToWorldVector(vector): mod.Vector
+```
 
 #### effectiveWorldToLocalVector
+```typescript
+effectiveWorldToLocalVector(vector): mod.Vector
+```
 
 
 ### プロパティ
@@ -242,36 +259,53 @@ let object = obj.object;
 let pos = obj.worldPos;
 ```
 #### object
+* `object: mod.Object | undefined`  
 
 #### id
+* `id: number | undefined`  
 
 #### prefabEnum
+* `prefabEnum`  
 
 #### offset
+* `offset: mod.Vector`  
 
 #### worldPos
+* `worldPos: mod.Vector | undefined`  
 
 #### localPos
+* `localPos: mod.Vector | undefined`  
 
 #### effectiveWorldPos
+* `effectiveWorldPos: mod.Vector | undefined`  
 
 #### effectiveLocalPos
+* `effectiveLocalPos: mod.Vector | undefined`  
 
 #### worldRot
+* `WorldRot: mod.Vector | undefined`  
 
 #### localRot
+* `localRot: mod.Vector | undefined`  
 
 #### effectiveWorldRot
+* `effectiveWorldRot: mod.Vector | undefined`  
 
 #### effectiveLocalRot
+* `effectiveLocalRot: mod.Vector | undefined`  
 
 #### worldScale
+* `worldScale: number | undefined`  
 
 #### localScale
+* `localScale: number | undefined`  
 
 #### parent
+* `parent: TransformableObject | undefined`  
 
 #### children
+* `children: Set<TransformableObject> | undefined`  
 
 #### deleted
+* `deleted: boolean`
 
