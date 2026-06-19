@@ -104,7 +104,7 @@ createExistingObject(object, offset, scale): TransformableObject
 ### 子オブジェクトの生成
 対象オブジェクトの子オブジェクトとしてTransformableObjectオブジェクトを生成します。  
 子オブジェクトの仕様は基本的にGodotを参考にしています。  
-各引数の意味ははオブジェクト生成関数と同様です。  
+各引数の意味ははオブジェクト生成関数と同様です（`offset`, `scale`は省略可能）。  
 ただし、Godotにおける子オブジェクトの仕様に基づいて、**入力された`potision`, `rotation`, `angle`, `axis`は親のローカル座標系における値として解釈されることに注意してください**。  
 ####  createRuntimeChild
 ```typescript
