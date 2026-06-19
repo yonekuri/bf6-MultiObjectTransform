@@ -50,9 +50,11 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 オブジェクトの初期姿勢を`mod.Vector`で指定します。  
 `mod.SpawnObject`と同様の感覚で使用できる、Godotの値をコピーして使用できるなどのメリットがあります。  
 Godotの値をコピーする際は事前にRotation OrderをZYXに設定する必要があります。
+<p align="center">
 <img width="352" height="410" alt="image" src="https://github.com/user-attachments/assets/4c514fbe-2082-45d7-87c5-65d1c9307f3c" />
+</p>
 
-2. **回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法**  
+3. **回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法**  
 **_angle_**  
 ラジアンでの回転角を`number`で指定します。  
 **_axis_**  
