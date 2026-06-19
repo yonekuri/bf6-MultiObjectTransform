@@ -185,7 +185,9 @@ remove(): void
 2. それまでに予約された移動、回転を`applyTransform`で実際のTransformableObjectに反映
 の流れで行われます。
 `applyTransform`が実行されるまでは実際にはオブジェクトは移動しません。
-> ⚠️TransformableObjectの管理下にあるオブジェクトは外部から`mod.MoveObject`などで移動されることを想定していないため、それらによる操作は行わないでください。  
+> ⚠️TransformableObjectの管理下にあるオブジェクトは外部から`mod.MoveObject`などで移動されることを想定していないため、それらによる操作は行わないでください。
+
+
 メソッドは以下のように使用します。
 ```typescript
 let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
