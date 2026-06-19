@@ -46,7 +46,7 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 オブジェクトの姿勢には2通りの指定方法があります。  
 1. **`mod.SpawnObject`と同様にオイラー角で指定する方法**  
 **_rotation_**  
-オブジェクトの初期姿勢を`mod.Vector`で指定します。
+オブジェクトの初期姿勢を`mod.Vector`で指定します。  
 `mod.SpawnObject`と同様の感覚で使用できる、Godotの値をコピーして使用できるなどのメリットがあります。  
 2. **回転角と回転軸を指定してオブジェクトの初期姿勢からの回転で指定する方法**  
 **_angle_**  
@@ -58,11 +58,12 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 
 
 **_offset_**  
-スポーンさせるオブジェクトの位置のオフセットを設定します。
+スポーンさせるオブジェクトの位置のオフセットを設定します。（省略可能）
 この設定は主にオブジェクトの回転を行う際に重要です。   
 例えば`RuntimeSpawn_Common.FiringRange_Floor_01`は大きさ20.5×20.5の標準的な板型オブジェクトですが、ゲーム内でのオブジェクトの原点は板の角の部分に設定されています。
 これは`RotateObject`などを使用してオブジェクトを回転させた際に角を中心に回転することを意味し、板の中心などを軸とした回転は公式の関数では不可能です。  
-`RuntimeSpawn_Common.FiringRange_Floor_01`の例では`offset=mod.CreateVector(-10.25,0,-10.25)`と指定すると後述する`rotate`などによる回転の中心が板の中心として変更されます。
+`RuntimeSpawn_Common.FiringRange_Floor_01`の例では`offset=mod.CreateVector(-10.25,0,-10.25)`と指定すると後述する`rotate`などによる回転の中心が板の中心として変更されます。  
+省略された場合は`offset=mod.CreateVector(0,0,0)`として扱われます。
 <p align="center">
 <img width="547" height="322" alt="figure1" src="https://github.com/user-attachments/assets/a44f80ea-03b6-4430-9b3b-5825e87e1698" />
 </p>
