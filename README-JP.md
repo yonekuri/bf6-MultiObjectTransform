@@ -28,7 +28,6 @@
 このライブラリは、複数オブジェクトの変形を管理するTransformableObjectクラス、クォータニオン計算を提供するQuaternions名前空間、およびTransformableObjectクラスに関連する型を定義する同名の名前空間を追加します。  
 ここでは主にTransformableObjectクラスに含まれるメソッドとプロパティについて説明します。
 
-**メソッド**
 ### オブジェクトの生成
 ライブラリで扱うTransformableObjectオブジェクトは3種類あり、それぞれに生成関数が存在します。
 #### **createRuntimeObject**
@@ -128,12 +127,11 @@ createExistingChild(object, offset, scale): TransformableObject
 既にゲーム内に存在するオブジェクトを対象の子オブジェクトとして管理できるようにします。   
 
 
-#### オブジェクトの管理
+### オブジェクトの管理
 
-#### オブジェクトの移動・回転
+### オブジェクトの移動・回転
 
-#### ベクトルの変換
-
+### ベクトルの変換
 
 ### プロパティ
 
