@@ -133,10 +133,23 @@ createExistingChild(object, offset, scale): TransformableObject
 ```typescript
 attachAsChild(newParent): void
 ```
+対象を指定したオブジェクトの子オブジェクトに設定します。
+* `newParent`
+親オブジェクトを指定します。  
 
 ```typescript
-detachFromParent(newParent): void
+detachFromParent(): void
 ```
+対象が他のオブジェクトの子オブジェクトである場合、それを解除します。  
+
+```typescript
+remove(): void
+```
+対象のTransformableObjectオブジェクトを削除します。  
+ただし、対象がExistingオブジェクトの場合はオブジェクトそのものは削除されず、単にTransformableObjectの管理下から外れます。  
+`remove`後のTransformableObjectオブジェクトを対象としたメソッドは基本的に失敗します。
+
+
 ### オブジェクトの移動・回転
 
 ### ベクトルの変換
