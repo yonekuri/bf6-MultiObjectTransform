@@ -166,7 +166,7 @@ move(dpos): void
 ```
 オブジェクトの移動を相対座標で指示します。
 移動を反映するためにはこのメソッドが実行された後に`applyTransform`を実行する必要があります。  
-* `dpos: mod.Vector`
+* `dpos: mod.Vector`  
 オブジェクトの移動量を指定します。
 
 #### rotate
@@ -177,7 +177,7 @@ move(angle, axis, rotCenter): void
 回転を反映するためにはこのメソッドが実行された後に`applyTransform`を実行する必要があります。  
 * `angle: number`  
 回転角をラジアンで指定します。 
-* `axis: mod.Vector`
+* `axis: mod.Vector`  
 回転軸を指定します。
 
 #### applyTransform
@@ -187,7 +187,7 @@ applyTransform(): void
 `move`, `rotate`で予約された移動、回転を実際のオブジェクトに適用します。  
 また、オブジェクトが子オブジェクトを持つ場合、それらにも再帰的に実行を行います。
 
-### ベクトルの変換
+### ベクトル変換
 オブジェクトのローカル座標系を用いてベクトルを変換する操作を行います。
 #### localToWorldVector
 
@@ -199,6 +199,12 @@ applyTransform(): void
 
 
 ### プロパティ
+プロパティは以下のように取得できます。
+```typescript
+let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+let object = obj.object;
+let pos = obj.worldPos;
+```
 object
 id
 prefabEnum
