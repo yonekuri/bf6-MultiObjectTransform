@@ -4,7 +4,7 @@
 このスクリプトは主にBF6 Portalにおける以下の機能をサポートします。
 ・複数のオブジェクトに対する親子関係の設定
 ・オブジェクトの移動/任意軸での回転、それらを合成した運動
-これによって複数のオブジェクトを効率的に動かすことが可能です。<br>
+これによって複数のオブジェクトを効率的に動かすことが可能です。  
 ![movie1](https://github.com/user-attachments/assets/547a08e6-6d3e-495f-9512-9b3a43ade3f4)
 ![movie2](https://github.com/user-attachments/assets/746ad1b1-8aa3-4610-9405-345af69e7aeb)
 
@@ -16,7 +16,7 @@
 ## サンプルコード
 [MOT_Sample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MOT_Sample.ts "スクリプト")を使用することで機能を試すことが可能です。
 
-このサンプルコードではエイムを行いながらジャンプすることで視線の先に6つの板状オブジェクトを組み合わせた立方体が出現します。<br>
+このサンプルコードではエイムを行いながらジャンプすることで視線の先に6つの板状オブジェクトを組み合わせた立方体が出現します。  
 しゃがむことで立方体は以下の運動を同時に行います。
 * エイムで指定した方向への移動（コード86行目で指定）
 * エイムで指定した軸を中心にその場で回転（コード87行目で指定）
@@ -35,7 +35,8 @@ createRuntimeObject(prefabEnum, position, rotation, offset, scale)
 createRuntimeObject(prefabEnum, position, angle, axis, offset, scale)
 ```
 新たにTransformableObjectオブジェクトを生成します。  
-**_prefabEnum_**
+ **_prefabEnum_**
+  a
 
 * **createEmptyObject**
 ```typescript
