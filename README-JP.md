@@ -40,11 +40,11 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 
 
 **_potision_**  
-オブジェクトの生成位置を`mod.Vector`で指定します。
+オブジェクトの生成位置を`mod.Vector`で指定します。  
 
 
 オブジェクトの初期姿勢には2通りの指定方法があります。
-
+1. 
 **_rotation_**  
 オブジェクトの初期姿勢を`mod.Vector`で指定します。
 
