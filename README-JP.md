@@ -25,7 +25,7 @@
 * 呼び出したプレイヤーを中心に回転（コード88行目で指定）
 
 ## 機能
-このライブラリは、複数オブジェクトの変形を管理するTransformableObjectクラス、クォータニオン計算を提供するQuaternions名前空間、およびTransformableObjectクラスに関連する型を定義する同名の名前空間を追加します。
+このライブラリは、複数オブジェクトの変形を管理するTransformableObjectクラス、クォータニオン計算を提供するQuaternions名前空間、およびTransformableObjectクラスに関連する型を定義する同名の名前空間を追加します。  
 ここでは主にTransformableObjectクラスに含まれるメソッドとプロパティについて説明します。
 
 ### メソッド
@@ -77,6 +77,7 @@ createRuntimeObject(prefabEnum, position, angle, axis, offset, scale): Transform
 > ⚠️現在のBattlefield 6のバージョンでは公式で用意されている`SetObjectTransform`関数や`MoveObject`関数などを利用してスケールを変更したオブジェクトを回転させると、見た目の回転がズレるというバグが存在しています。<br>
 > そのため現状ではこの引数を使用することはおすすめしません。
 
+
 * **createEmptyObject**
 ```typescript
 createEmptyObject(potision, rotation, scale): TransformableObject
@@ -86,12 +87,14 @@ createEmptyObject(position, angle, axis, scale): TransformableObject
 これはGodotにおけるNode3Dオブジェクトに対応します。
 主に複数のオブジェクトをまとめて動かす際の親オブジェクトとして使用します。
 
+
 * **createExistingObject**
 ```typescript
 createExistingObject(object, offset, scale): TransformableObject
 ```
 既にゲーム内に存在するオブジェクトをTransformableObjectオブジェクトとして管理できるようにします。
-
+**_object_**  
+対象のオブジェクトを`mod.Object`で指定します。  
 
 
 #### 子オブジェクトの生成
