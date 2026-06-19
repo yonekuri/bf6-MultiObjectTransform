@@ -28,6 +28,12 @@
 
 ### メソッド
 #### オブジェクトの生成
+ライブラリで扱うTransformableObjectオブジェクトは3種類あり、それぞれに生成関数が存在します。
+##### createRuntimeObject
+
+##### createEmptyObject
+
+##### createExistingObject
 
 #### 子オブジェクトの生成
 
