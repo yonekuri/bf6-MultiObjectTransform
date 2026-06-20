@@ -1,266 +1,539 @@
 # bf6-MultiObjectTransform
 [※日本語の解説はこちらです](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/README-JP.md)
 
-This script supports moving objects and rotating them around arbitrary axis within the BF6 Portal, as well as combining these motions.
-Furthermore, by creating composite objects through parent-child relationships with other objects, you can efficiently manage multiple objects.<br>
+This script primarily adds support for the following features in Battlefield 6 Portal:
+
+- Creating parent-child relationships between multiple objects
+- Moving objects, rotating them around arbitrary axes, and combining these transformations into more complex motion
+
+These features make it possible to move and animate multiple objects efficiently.
+
 ![movie1](https://github.com/user-attachments/assets/547a08e6-6d3e-495f-9512-9b3a43ade3f4)
 ![movie2](https://github.com/user-attachments/assets/746ad1b1-8aa3-4610-9405-345af69e7aeb)
 
-Using these features, I believe it's possible to create a wide range of functionalities: recreating BF1's Behemoth, such as a airship, animating objects to recreate BF4's Revolution, and if you implement a physics simulation, even playing football with a physics simulation.
-If you use this script, I'd be happy to take a look if you let me know.
+Possible applications include recreating large vehicles such as the airship from Battlefield 1, reproducing Battlefield 4-style Levolution events through object animation, and even creating games such as object-based soccer by implementing a simple physics system.
 
 ## Usage
-Copy and paste the contents of [MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト") to the end of your script.
 
-## Sample code
-Using [MOT_Sample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MOT_Sample.ts "スクリプト") allows you to test the functionality.
+Copy and paste the contents of [MultiObjectTransform.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MultiObjectTransform.ts) at the end of your script.
 
-In this sample code, aiming down and jumping, a cube appears.<br>
-By crouching, the cube simultaneously performs the following movements.
-* Move in the direction specified by aiming down (line 58 of the code)
-* Rotate in place around the axis specified by aiming down (line 59 of the code)
-* Rotate around the summoned player (line 60 of the code)
+## Sample Code
+
+You can try the library by using [MotSample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MotSample.ts).
+
+In this sample, jumping while aiming spawns a cube made from six flat objects at the point you are looking at. Crouching then makes the cube perform the following motions simultaneously:
+
+- Move in the direction specified by aiming, configured on line 86
+- Rotate in place around the axis specified by aiming, configured on line 87
+- Orbit around the player who spawned it, configured on line 88
 
 ## Features
-This script adds only the `RuntimeObject` class.<br>
-When you create an instance of the class by specifying arguments as shown below, an object will also spawn within the game.
+
+This library adds the `TransformableObject` class for managing transformations across multiple objects, the `Quaternions` namespace for quaternion calculations, and a second `TransformableObject` namespace containing types related to the class.
+
+This README mainly describes the methods and properties provided by the `TransformableObject` class.
+
+### Creating Objects
+
+The library supports three types of `TransformableObject`, each with its own creation method.
+
 ```typescript
-let obj = new RuntimeObject(prefabEnum, pos, offset, axis, angle, scale);
+let obj = TransformableObject.createRuntimeObject(
+    RuntimeSpawn_Common.FiringRange_Floor_01,
+    mod.CreateVector(0, 100, 0),
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(-10.25, 0, -10.25),
+    1
+);
+
+let existingObj = TransformableObject.createExistingObject(
+    mod.GetSpatialObject(1)
+);
 ```
-The meaning of each argument is as follows.
 
-* `prefabEnum`:<br>
-Specify the object to spawn.
-The available parameters are the same as those currently provided for the official `SpawnObject` function.<br>
-Additionally, specifying `undefined` allows you to spawn an “empty object”.
-This feature is primarily used when setting object parent-child relationships, described later.
+#### `createRuntimeObject`
 
-<br>
+```typescript
+static createRuntimeObject(
+    prefabEnum,
+    position,
+    rotation,
+    offset?,
+    scale?
+): TransformableObject
 
-* `pos: mod.Vector`:<br>
-Specify the position where objects are spawned.
+static createRuntimeObject(
+    prefabEnum,
+    position,
+    angle,
+    axis,
+    offset?,
+    scale?
+): TransformableObject
+```
 
-<br>
+Creates a new runtime object and returns it as a `TransformableObject`.
 
-* `offset: mod.Vector`:<br>
-Set the offset for the position of spawned objects.<br>
-This setting is primarily important when rotating objects.<br>
-For example, `RuntimeSpawn_Common.FiringRange_Floor_01` is a standard 20.5×20.5 plane-type object, but the object's origin point in-game is set at the corner of the plane.
-This means that when rotating an object using functions like `RotateObject`, it rotates around its corner.
-Rotating around the center of a plane is not possible using the official functions.<br>
-In this example, specifying `offset=mod.CreateVector(-10.25,0,-10.25)` changes the center of rotation for `QRotation`, described later, to the center of the plane.
+- `prefabEnum: TransformableObject.PrefabEnum`
+
+  Specifies the prefab to spawn, such as `mod.RuntimeSpawn_Common.FiringRange_Floor_01`.
+
+- `position: mod.Vector`
+
+  Specifies the world position at which the object is created.
+
+There are two ways to specify the initial orientation of the object.
+
+1. **Specify Euler angles, as with `mod.SpawnObject`**
+
+   - `rotation: mod.Vector`
+
+     Specifies the initial orientation of the object using Euler angles. This method can be used in a similar way to `mod.SpawnObject`, and values can be copied from Godot. Before copying rotation values from Godot, set the Rotation Order to `ZYX`.
+
 <p align="center">
-<img width="547" height="322" alt="figure1" src="https://github.com/user-attachments/assets/a44f80ea-03b6-4430-9b3b-5825e87e1698" />
+<img width="352" height="410" alt="Godot Rotation Order setting" src="https://github.com/user-attachments/assets/4c514fbe-2082-45d7-87c5-65d1c9307f3c" />
 </p>
 
-<br>
+2. **Specify a rotation angle and axis relative to the object's default orientation**
 
-* `axis: mod.Vector, angle: nuber`:<br>
-Specify the initial pose of the object using two arguments.<br>
-This is set as rotation around arbitrary axis from the default pose.<br>
-Specify the rotation axis with `axis` and the rotation angle in radians with `angle`.
-Specifying a positive value for `angle` performs a counterclockwise rotation relative to the axis, while specifying a negative value performs a clockwise rotation.<br>
-For example, when you specify `axis=mod.CreateVector(0,1,0), angle=Math.PI/3`, the object will spawn rotated 30 degrees from the default position around the y-axis.
-> ⚠️**Note**<br>
-> If you specify the zero vector `axis=mod.CreateVector(0,0,0)` for the rotation axis, a warning will appear in the console, and the object will spawn with rotation disabled.
+   - `angle: number`
 
-<br>
+     Specifies the rotation angle in radians.
 
-* `scale: mod.Vector`:<br>
-Specify the scale of the object.<br>
-This argument is optional.
-If omitted, the object's default scale, `scale=mod.CreateVector(1,1,1)`, is specified.
-> ⚠️**Note**<br>
-> In the current version of Battlefield 6, there is a bug where moving an object whose scale has been altered using official functions like `SetObjectTransform` or `MoveObject` causes only the visual scale to revert to default, while the object's collision scale remains unchanged.<br>
-> Therefore, I do not recommend using this argument at this time.
+   - `axis: mod.Vector`
 
-### Property
-An instance of `RuntimeObject` has eight properties.<br>
-You can retrieve the property as follows.
+     Specifies the rotation axis. The initial orientation is determined by rotating the object's default orientation around `axis` by `angle`. Once understood, this method can be more intuitive than using Euler angles.
+
+- `offset: mod.Vector` *(optional)*
+
+  Specifies a positional offset for the spawned object. This setting is especially important when rotating an object.
+
+  For example, `mod.RuntimeSpawn_Common.FiringRange_Floor_01` is a standard flat object measuring 20.5 × 20.5 units, but its in-game origin is located at one of its corners. As a result, rotating it with a function such as `mod.RotateObject` causes it to rotate around that corner. The official functions do not provide a direct way to rotate it around another point, such as the center of the object.
+
+  For this prefab, setting `offset` to `mod.CreateVector(-10.25, 0, -10.25)` changes the center used by methods such as `rotate` to the center of the panel.
+
+  When omitted, `offset` is treated as `mod.CreateVector(0, 0, 0)`.
+
+<p align="center">
+<img width="547" height="322" alt="Offset example" src="https://github.com/user-attachments/assets/a44f80ea-03b6-4430-9b3b-5825e87e1698" />
+</p>
+
+- `scale: number` *(optional)*
+
+  Specifies the scale of the object. When omitted, `scale` is treated as `1`.
+
+> ⚠️ In the current version of Battlefield 6, rotating a scaled object with official functions such as `mod.SetObjectTransform` or `mod.MoveObject` may cause its visual rotation to become misaligned.<br>
+> For this reason, using this argument is not currently recommended.
+
+#### `createEmptyObject`
+
 ```typescript
-let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(-10.25,0,-10.25), mod.CreateVector(0,1,0), 0);
+static createEmptyObject(
+    position,
+    rotation,
+    scale?
+): TransformableObject
+
+static createEmptyObject(
+    position,
+    angle,
+    axis,
+    scale?
+): TransformableObject
+```
+
+Creates an empty `TransformableObject` that has transformation data but does not contain an in-game object. It is similar to a `Node3D` in Godot and is mainly used as a parent for grouping and moving multiple objects together.
+
+#### `createExistingObject`
+
+```typescript
+static createExistingObject(
+    object,
+    offset?,
+    scale?
+): TransformableObject
+```
+
+Allows an object that already exists in the game to be managed as a `TransformableObject`.
+
+- `object: mod.Object`
+
+  Specifies the existing object to manage.
+
+### Creating Child Objects
+
+These methods create a new `TransformableObject` as a child of the target object. Their behavior is primarily based on Godot's child-node system.
+
+The arguments have the same meanings as those used by the object creation methods. `offset` and `scale` are optional.
+
+However, note that **the supplied `position`, `rotation`, `angle`, and `axis` values are interpreted in the local coordinate system of the parent object**.
+
+```typescript
+let root = TransformableObject.createEmptyObject(
+    mod.CreateVector(0, 100, 0),
+    mod.CreateVector(0, 0, 0)
+);
+
+let child = root.createRuntimeChild(
+    RuntimeSpawn_Common.FiringRange_Floor_01,
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(-10.25, 0, -10.25)
+);
+
+let camera = root.createExistingChild(mod.GetFixedCamera(1));
+```
+
+#### `createRuntimeChild`
+
+```typescript
+createRuntimeChild(
+    prefabEnum,
+    position,
+    rotation,
+    offset?,
+    scale?
+): TransformableObject | undefined
+
+createRuntimeChild(
+    prefabEnum,
+    position,
+    angle,
+    axis,
+    offset?,
+    scale?
+): TransformableObject | undefined
+```
+
+Creates a new runtime object as a child of the target object. If the target object has already been deleted, the method returns `undefined`.
+
+#### `createEmptyChild`
+
+```typescript
+createEmptyChild(
+    position,
+    rotation,
+    scale?
+): TransformableObject | undefined
+
+createEmptyChild(
+    position,
+    angle,
+    axis,
+    scale?
+): TransformableObject | undefined
+```
+
+Creates a new empty object as a child of the target object. If the target object has already been deleted, the method returns `undefined`.
+
+#### `createExistingChild`
+
+```typescript
+createExistingChild(
+    object,
+    offset?,
+    scale?
+): TransformableObject | undefined
+```
+
+Allows an object that already exists in the game to be managed as a child of the target object. If the target object has already been deleted, the method returns `undefined`.
+
+### Managing Objects
+
+The object-management methods can be used as follows:
+
+```typescript
+let root = TransformableObject.createEmptyObject(
+    mod.CreateVector(0, 100, 0),
+    mod.CreateVector(0, 0, 0)
+);
+
+let child = root.createRuntimeChild(
+    RuntimeSpawn_Common.FiringRange_Floor_01,
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(-10.25, 0, -10.25)
+);
+
+child?.detachFromParent();
+
+let camera = TransformableObject.createExistingObject(
+    mod.GetFixedCamera(1)
+);
+
+camera.attachAsChild(root);
+root.remove();
+```
+
+#### `attachAsChild`
+
+```typescript
+attachAsChild(newParent): void
+```
+
+Attaches the target object as a child of the specified object.
+
+- `newParent: TransformableObject`
+
+  Specifies the new parent object.
+
+#### `detachFromParent`
+
+```typescript
+detachFromParent(): void
+```
+
+Removes the target object from its current parent, if it has one.
+
+#### `remove`
+
+```typescript
+remove(): void
+```
+
+Removes the target `TransformableObject`. If it has child objects, they are removed recursively as well.
+
+When the target is an existing object, the original in-game object is not deleted. It is only removed from the management of `TransformableObject`.
+
+Most method calls made on a `TransformableObject` after `remove` has been called will fail.
+
+### Moving and Rotating Objects
+
+Movement and rotation with this library follow a two-step process:
+
+1. Schedule movement and rotation with `move` and `rotate`.
+2. Apply all scheduled transformations to the actual objects with `applyTransform`.
+
+The actual objects do not move until `applyTransform` is called.
+
+**A child object belongs to the local coordinate system of its parent, so movement and rotation applied directly to the child are interpreted in that local coordinate system.**
+
+When movement or rotation is applied to an object that has children, **the parent and all of its children move together while preserving their relative positions and orientations**.
+
+> ⚠️ Objects managed by `TransformableObject` are not designed to be moved externally with functions such as `mod.MoveObject`. Do not use those functions on managed objects.
+
+```typescript
+let obj = TransformableObject.createRuntimeObject(
+    RuntimeSpawn_Common.FiringRange_Floor_01,
+    mod.CreateVector(0, 100, 0),
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(-10.25, 0, -10.25),
+    1
+);
+
+obj.move(mod.CreateVector(10, 0, 0));
+obj.applyTransform();
+```
+
+#### `move`
+
+```typescript
+move(dpos): void
+```
+
+Schedules a relative movement for the object. Call `applyTransform` afterward to apply the movement to the actual object.
+
+- `dpos: mod.Vector`
+
+  Specifies the amount by which the object should move.
+
+#### `rotate`
+
+```typescript
+rotate(angle, axis, rotCenter?): void
+```
+
+Schedules a rotation using a rotation angle and axis. Call `applyTransform` afterward to apply the rotation to the actual object.
+
+- `angle: number`
+
+  Specifies the rotation angle in radians.
+
+- `axis: mod.Vector`
+
+  Specifies the rotation axis.
+
+- `rotCenter: mod.Vector` *(optional)*
+
+  Specifies the center of rotation in world coordinates. When omitted, the object rotates around its own effective position.
+
+#### `applyTransform`
+
+```typescript
+applyTransform(): void
+```
+
+Applies the movement and rotation scheduled with `move` and `rotate` to the actual object. If the object has children, the method is also called recursively for all descendants.
+
+### Vector Conversion
+
+These methods convert vectors between the world coordinate system and the local coordinate system of the parent to which the target object belongs.
+
+```typescript
+let obj = TransformableObject.createRuntimeObject(
+    RuntimeSpawn_Common.FiringRange_Floor_01,
+    mod.CreateVector(0, 100, 0),
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(-10.25, 0, -10.25),
+    1
+);
+
+obj.localToWorldVector(mod.CreateVector(20, 0, 0));
+```
+
+#### `localToWorldVector`
+
+```typescript
+localToWorldVector(vector): mod.Vector
+```
+
+Converts a vector from the local coordinate system to the world coordinate system.
+
+#### `worldToLocalVector`
+
+```typescript
+worldToLocalVector(vector): mod.Vector
+```
+
+Converts a vector from the world coordinate system to the local coordinate system.
+
+#### `effectiveLocalToWorldVector`
+
+```typescript
+effectiveLocalToWorldVector(vector): mod.Vector
+```
+
+Converts a vector from the local coordinate system to the world coordinate system while also accounting for transformations currently scheduled on the parent object.
+
+#### `effectiveWorldToLocalVector`
+
+```typescript
+effectiveWorldToLocalVector(vector): mod.Vector
+```
+
+Converts a vector from the world coordinate system to the local coordinate system while also accounting for transformations currently scheduled on the parent object.
+
+### Properties
+
+The following properties expose information held by a `TransformableObject`.
+
+When the target object has already been deleted, most properties return `undefined`, with a few exceptions.
+
+```typescript
+let obj = TransformableObject.createRuntimeObject(
+    RuntimeSpawn_Common.FiringRange_Floor_01,
+    mod.CreateVector(0, 100, 0),
+    mod.CreateVector(0, 0, 0),
+    mod.CreateVector(-10.25, 0, -10.25),
+    1
+);
+
 let object = obj.object;
-let pos = obj.worldPos;
+let position = obj.worldPos;
 ```
-The descriptions of each property are as follows.
 
-#### object
-`object: mod.Object | undefined`:
-Get the object itself.<br>
-If the instance is an empty object, it returns `undefined`.
+#### `object`
 
-#### id
-`id: number | undefined`: 
-Get the object's ID.<br>
-If the instance is an empty object, it returns `undefined`.
+- `object: mod.Object | undefined`
 
-#### prefabEnum
-`prefabEnum`: 
-Get the prefabEnum of the specified specified at the time of instance creation.<br>
-If the instance is an empty object, it returns `undefined`.
+  Returns the managed in-game object itself. Returns `undefined` when the target is an empty object.
 
-#### offset
-`offset: mod.Vector`:
-Get the offset of an object, specified at the time of instance creation.
+#### `id`
 
-#### worldPos
-`worldPos: mod.Vector`:
-Get the **rotation center coordinates** of the object in world coordinates.
+- `id: number | undefined`
 
-#### localPos
-`localPos: mod.Vector`:
-Get the **rotation center coordinates** of the object in the parent's local coordinates.<br>
-If no parent exists, it has the same value as worldPos.
+  Returns the object ID of the managed object. Returns `undefined` when the target is an empty object.
 
-#### effWorldPos
-`effWorldPos: mod.Vector`: <br>
-Get the rotation center coordinates of the object **reflecting the movement and rotation specified by Move and QRotation** in world coordinates.
+#### `prefabEnum`
 
-#### effLocalPos
-`effLocalPos: mod.Vector`: <br>
-Get the rotation center coordinates of the object **reflecting the movement and rotation specified by Move and QRotation** in the parent's local coordinates.<br>
-If no parent exists, it has the same value as effWorldPos.
+- `prefabEnum: TransformableObject.PrefabEnum | undefined`
 
-#### parent
-`parent: RuntimeObject | undefied`:
-Get the parent of the object.<br>
-If no parent exists, it returns `undefined`.
+  Returns the prefab enum used to create the object. Returns `undefined` when the target is not a runtime object.
 
-#### children
-`children: Set<RuntimeObject>`:
-Get the children of the object.<br>
-Children are retrieved as a `Set` in TypeScript.
+#### `offset`
 
-### Method
-`RuntimeObject` class has five methods.<br>
-The method is used as follows.
-```typescript
-let obj = new RuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(-10.25,0,-10.25), mod.CreateVector(0,1,0), 0);
-obj.Move(mod.CreateVector(10,0,0));
-obj.ApplyTransform();
-```
-The descriptions of each method are as follows.
+- `offset: mod.Vector`
 
-#### Move
-```typescript
-Move(dpos)
-```
-Specify object movement using relative coordinates.<br>
-Note, however, **executing only this method will not reflect the object's movement within the game.**<br>
-To reflect the movement, you must call `ApplyTransform`, described later, after this method is executed.
-* `dpos: mod.Vector`: Specify the amount by which the object is moved.
-<br>
+  Returns the offset that was assigned when the object was created.
 
-#### QRotation
-```typescript
-QRotation(axis, angle, rotCenter)
-```
-Specify the rotation of an object using the rotation axis and rotation angle.<br>
-Note, however, **executing only this method will not reflect the object's rotation within the game.**<br>
-To reflect the rotation, you must call `ApplyTransform`, described later, after this method is executed.
-* `axis: mod.Vector`: Specify the rotation axis.
-* `angle: number`: Specify the rotation angle.
+#### `worldPos`
 
-Additionally, rotation typically centers around the object's origin specified by `offset` during spawn, but specifying the additional argument `rotCenter`, you can change the center of rotation to the arbitrary world coordinate.
-* `rotCenter: mod:Vector`: Specify the rotation center point **in the world coordinates**. This argument is optional.
-<br>
+- `worldPos: mod.Vector | undefined`
 
-#### ApplyTransform
-```typescript
-ApplyTransform()
-```
-Reflect the movement and rotation of the object previously specified by `Move` and `QRotation` in the game.<br>
-For example, if you keep calling `Move` in `Ongoing`, the object will gradually move by the specified amount every frame.
-<br>
+  Returns the object's current position in world coordinates.
 
-#### NewChild
-```typescript
-NewChild(prefabEnum, pos, offset, axis, angle, scale): RuntimeObject
-```
-Spawn a new object as a child of the object.<br>
-The arguments that can be specified are the same as when creating an instance.
-Note, however, `pos, offset, axis` are specified in the **local coordinates of the parent object**.<br>
-Returns the generated RuntimeObject as the return value.<br>
-Detailed usage of parent-child relationships will be described later.
-<br>
+#### `effectiveWorldPos`
 
-#### Remove
-```typescript
-Remove()
-```
-Remove the object.
-<br>
+- `effectiveWorldPos: mod.Vector | undefined`
 
-#### LocalToWorldVector
-```typescript
-LocalToWorldVector(vector)
-```
-Convert a vector in the object's local coordinates to the world coordinates.<br>
-* `vector: mod.Vector`: Specify the vector in the object's local coordinates before transformation.
-<br>
+  Returns the object's planned position in world coordinates, including transformations that have been scheduled but not yet applied.
 
-#### WorldToLocalVector
-```typescript
-WorldToLocalVector(vector)
-```
-Convert a vector in the world coordinates to the object's local coordinates.<br>
-* `vector: mod.Vector`: Specify the vector in the world coordinates before transformation.
-<br>
+#### `localPos`
 
-#### EffLocalToWorldVector
-```typescript
-EffLocalToWorldVector(vector)
-```
-Convert a vector in the object's local coordinates, **reflecting any movement or rotation indicated by **Move or QRotation**, to the world coordinates.
-* `vector: mod.Vector`: Specify the vector in the object's local coordinates, **reflecting any movement or rotation indicated by **Move or QRotation**, before transformation.
-<br>
+- `localPos: mod.Vector | undefined`
 
-#### EffWorldToLocalVector
-```typescript
-EffWorldToLocalVector(vector)
-```
-Convert a vector in the world coordinates to the object's local coordinates, **reflecting any movement or rotation indicated by **Move or QRotation**.
-* `vector: mod.Vector`: Specify the vector in the world coordinates before transformation.
-<br>
+  Returns the object's current position in the local coordinate system of its parent.
 
-### Parent-child relationships
-Using `NewChild` allows to specify the parent-child relationship between objects.<br>
-This makes it easy to move and rotate multiple objects when used effectively.
+#### `effectiveLocalPos`
 
-Objects with parent-child relationships have the following properties.
-* When creating child objects using `NewChild`, the `pos, offset, axis` values are calculated **in the parent object's local coordinates**.
-* When the parent object is moved or rotated, child objects will also move or rotate while maintaining their relative positions to the parent object.
-* The movement vector for `Move` and the rotation axis for `QRotation` on child objects are all calculated **in the parent object's local coordinates**.
-* When you delete a parent object using `Remove`, **all child objects and their descendants will also be deleted**.
+- `effectiveLocalPos: mod.Vector | undefined`
 
-Specifying displacement amounts and rotation axis in the parent object's local coordinates may be easier to understand if you imagine manipulating objects in the spatial editor.<br>
+  Returns the object's planned position in the local coordinate system of its parent, including transformations that have been scheduled but not yet applied.
 
-To apeear a cube like the sample code, execute the following:
-```typescript
-const pos = mod.CreateVector(0,100,0);
-let obj = new RuntimeObject(undefined, pos, mod.CreateVector(0,0,0), mod.CreateVector(1,0,0), 0); //Create Parent Empty Object.
-const prefabEnum = mod.RuntimeSpawn_Common.FiringRange_Floor_01;
-const offset = mod.CreateVector(-10.25,0,-10.25);
-obj.NewChild(prefabEnum, mod.CreateVector(     0, 10.25,     0), offset, mod.CreateVector(0,1,0),          0);
-obj.NewChild(prefabEnum, mod.CreateVector(     0,     0, 10.25), offset, mod.CreateVector(1,0,0),  Math.PI/2);
-obj.NewChild(prefabEnum, mod.CreateVector(     0,     0,-10.25), offset, mod.CreateVector(1,0,0), -Math.PI/2);
-obj.NewChild(prefabEnum, mod.CreateVector(     0,-10.25,     0), offset, mod.CreateVector(1,0,0),    Math.PI);
-obj.NewChild(prefabEnum, mod.CreateVector(-10.25,     0,     0), offset, mod.CreateVector(0,0,1),  Math.PI/2);
-obj.NewChild(prefabEnum, mod.CreateVector( 10.25,     0,     0), offset, mod.CreateVector(0,0,1), -Math.PI/2);
-```
-In this example, a parent empty object is created, and six boards are generated as its children with varying positions and angles to represent a cube.<br>
-When the parent moves, the child also moves while maintaining its relative position.
-Therefore, to move the cube, you can simply call the parent's method.
-```typescript
-obj.Move(mod.CreateVector(0.5,0,0));
-obj.QRotation(mod.CreateVector(0,1,0), Math.PI/180);
-obj.ApplyTransform();
-```
-Additionally, when generating a child with the parent's posture altered as shown below, the position and rotation axis are calculated in the parent's coordinates.
-So the cube will be generated in a rotated state from the start.
-```typescript
-let obj = new RuntimeObject(undefined, pos, mod.CreateVector(0,0,0), mod.CreateVector(1,0,0), Math.PI/4); //Rotate 45 degrees around the x-axis.
-```
-Using the `parent` and `children` properties allows you to retrieve the parent and children objects.<br>
-Note that children are retrieved as a `Set` in TypeScript, storing child objects in the order they were spawned.
-If you want to retrieve a specific child, it is recommended to convert the `Set` to an array and extract it.
+<p align="center">
+<img width="630" height="388" alt="World and local coordinates" src="https://github.com/user-attachments/assets/1c056632-7f13-49a8-832e-8a9eedf3706c" />
+</p>
+
+#### `worldRot`
+
+- `worldRot: mod.Vector | undefined`
+
+  Returns the object's current orientation in world coordinates as Euler angles.
+
+#### `effectiveWorldRot`
+
+- `effectiveWorldRot: mod.Vector | undefined`
+
+  Returns the object's planned orientation in world coordinates, including rotations that have been scheduled but not yet applied.
+
+#### `localRot`
+
+- `localRot: mod.Vector | undefined`
+
+  Returns the object's current orientation as Euler angles in the local coordinate system of its parent.
+
+#### `effectiveLocalRot`
+
+- `effectiveLocalRot: mod.Vector | undefined`
+
+  Returns the object's planned orientation in the local coordinate system of its parent, including rotations that have been scheduled but not yet applied.
+
+#### `worldScale`
+
+- `worldScale: number | undefined`
+
+  Returns the object's scale in world coordinates.
+
+#### `localScale`
+
+- `localScale: number | undefined`
+
+  Returns the object's scale relative to the local coordinate system of its parent.
+
+#### `parent`
+
+- `parent: TransformableObject | undefined`
+
+  Returns the parent object. Returns `undefined` when the target does not have a parent.
+
+#### `children`
+
+- `children: Set<TransformableObject> | undefined`
+
+  Returns the target's direct child objects as a TypeScript `Set`.
+
+#### `deleted`
+
+- `deleted: boolean`
+
+  Returns whether the object has already been deleted. Returns `true` if it has been deleted and `false` if it still exists.
