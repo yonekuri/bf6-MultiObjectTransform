@@ -319,7 +319,7 @@ let pos = obj.worldPos;
 
 #### parent
 * `parent: TransformableObject | undefined`
-対象の親オブジェクトを取得します。
+対象の親オブジェクトを取得します。  
 親オブジェクトが存在しない場合は`undefined`を返します。
 
 #### children
