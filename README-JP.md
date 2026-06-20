@@ -251,7 +251,7 @@ effectiveWorldToLocalVector(vector): mod.Vector
 
 ### プロパティ
 TransformableObjectが持つ情報を取得できます。  
-対象のオブジェクトが既に削除されていた場合、`undefined`を返します（`deleted`を除く）。  
+対象のオブジェクトが既に削除されていた場合、基本的には`undefined`を返します（一部を除く）。  
 プロパティは以下のように取得できます。
 ```typescript
 let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
