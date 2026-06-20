@@ -291,7 +291,7 @@ let pos = obj.worldPos;
 * `localPos: mod.Vector | undefined`  
 オブジェクトの現在の座標を**親オブジェクトのローカル座標系で**取得します。
 <p align="center">
-<img width="991" height="582" alt="figure2" src="https://github.com/user-attachments/assets/98dd3623-a2e4-48ce-a428-9a2160199581" />
+<img width="315" height="194" alt="figure2" src="https://github.com/user-attachments/assets/1c056632-7f13-49a8-832e-8a9eedf3706c" />
 </p>
 
 #### effectiveWorldPos
