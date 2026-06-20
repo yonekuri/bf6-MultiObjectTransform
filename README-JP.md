@@ -287,32 +287,32 @@ let pos = obj.worldPos;
 * `worldPos: mod.Vector | undefined`  
 オブジェクトの現在の座標をワールド座標系で取得します。
 
-#### localPos
-* `localPos: mod.Vector | undefined`  
-オブジェクトの現在の座標を**親オブジェクトのローカル座標系で**取得します。
-<p align="center">
-<img width="630" height="388" alt="figure2" src="https://github.com/user-attachments/assets/1c056632-7f13-49a8-832e-8a9eedf3706c" />
-</p>
-
 #### effectiveWorldPos
 * `effectiveWorldPos: mod.Vector | undefined`  
 オブジェクトが移動を予定している座標をワールド座標系で取得します。
 
+#### localPos
+* `localPos: mod.Vector | undefined`  
+オブジェクトの現在の座標を**親オブジェクトのローカル座標系で**取得します。
+
 #### effectiveLocalPos
 * `effectiveLocalPos: mod.Vector | undefined`  
 オブジェクトが移動を予定している座標を**親オブジェクトのローカル座標系で**取得します。
+<p align="center">
+<img width="630" height="388" alt="figure2" src="https://github.com/user-attachments/assets/1c056632-7f13-49a8-832e-8a9eedf3706c" />
+</p>
 
 #### worldRot
 * `WorldRot: mod.Vector | undefined`  
 オブジェクトの現在の姿勢をオイラー座標形式でワールド座標系で取得します。
 
-#### localRot
-* `localRot: mod.Vector | undefined`  
-オブジェクトの現在の姿勢をオイラー座標形式で**親オブジェクトのローカル座標系で**取得します。
-
 #### effectiveWorldRot
 * `effectiveWorldRot: mod.Vector | undefined`  
 オブジェクトが回転を予定している姿勢をワールド座標系で取得します。
+
+#### localRot
+* `localRot: mod.Vector | undefined`  
+オブジェクトの現在の姿勢をオイラー座標形式で**親オブジェクトのローカル座標系で**取得します。
 
 #### effectiveLocalRot
 * `effectiveLocalRot: mod.Vector | undefined`  
