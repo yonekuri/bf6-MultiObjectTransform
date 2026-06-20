@@ -13,7 +13,7 @@
 これらの機能を用いれば、BF1の飛行船などの巨大兵器の再現や、オブジェクトのアニメーションによるBF4のレボリューションの再現、ある程度の物理演算を実装すればオブジェクトによるサッカーまで様々な機能が実装できると考えています。
 
 ## 使い方
-[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
+[MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MultiObjectTransform.ts)の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## サンプルコード
 [MotSample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MotSample.ts)を使用することで機能を試すことが可能です。
