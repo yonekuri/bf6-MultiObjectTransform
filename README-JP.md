@@ -32,7 +32,7 @@
 ライブラリで扱うTransformableObjectは3種類あり、それぞれに生成関数が存在します。  
 オブジェクトの生成は以下のように行います。
 ```typescript
-let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+let obj = TransformableObject.createRuntimeObject(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
 let existObj = TransformableObject.createExistingObject(mod.GetSpatialObject(1));
 ```
 #### createRuntimeObject
@@ -109,12 +109,12 @@ static createExistingObject(object, offset, scale): TransformableObject
 ### 子オブジェクトの生成
 対象オブジェクトの子オブジェクトとしてTransformableObjectを生成します。  
 子オブジェクトの仕様は基本的にGodotを参考にしています。  
-各引数の意味ははオブジェクト生成関数と同様です（`offset`, `scale`は省略可能）。  
+各引数の意味はオブジェクト生成関数と同様です（`offset`, `scale`は省略可能）。  
 ただし、Godotにおける子オブジェクトの仕様に基づいて、**入力された`position`, `rotation`, `angle`, `axis`は親のローカル座標系における値として解釈されることに注意してください**。  
 子オブジェクトの生成は以下のように行います。
 ```typescript
 let root = TransformableObject.createEmptyObject(mod.CreateVector(0,100,0), mod.CreateVector(0,0,0));
-let child = root.createRuntimeChild(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,0,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25));
+let child = root.createRuntimeChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,0,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25));
 let camera = TransformableObject.createExistingChild(mod.GetFixedCamera(1));
 ```
 ####  createRuntimeChild
@@ -147,7 +147,7 @@ createExistingChild(object, offset, scale): TransformableObject | undefined
 管理関数は以下のように使用します。
 ```typescript
 let root = TransformableObject.createEmptyObject(mod.CreateVector(0,100,0), mod.CreateVector(0,0,0));
-let child = root.createRuntimeChild(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,0,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25));
+let child = root.createRuntimeChild(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,0,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25));
 child.detachFromParent();
 
 let camera = TransformableObject.createExistingObject(mod.GetFixedCamera(1));
@@ -192,9 +192,9 @@ remove(): void
 
 メソッドは以下のように使用します。
 ```typescript
-let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
-obj.Move(mod.CreateVector(10,0,0));
-obj.ApplyTransform();
+let obj = TransformableObject.createRuntimeObject(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+obj.move(mod.CreateVector(10,0,0));
+obj.applyTransform();
 ```
 #### move
 ```typescript
@@ -207,7 +207,7 @@ move(dpos): void
 
 #### rotate
 ```typescript
-move(angle, axis, rotCenter): void
+rotate(angle, axis, rotCenter): void
 ```
 オブジェクトの回転を回転角と回転軸で指示します。
 回転を反映するためにはこのメソッドが実行された後に`applyTransform`を実行する必要があります。  
@@ -227,7 +227,7 @@ applyTransform(): void
 ワールド座標系と対象が属する親オブジェクトのローカル座標系の間でベクトルを変換する操作を行います。  
 メソッドは以下のように使用します。
 ```typescript
-let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+let obj = TransformableObject.createRuntimeObject(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
 obj.localToWorldVector(mod.CreateVector(20,0,0));
 ```
 #### localToWorldVector
@@ -260,7 +260,7 @@ TransformableObjectが持つ情報を取得できます。
 対象のオブジェクトが既に削除されていた場合、基本的には`undefined`を返します（一部を除く）。  
 プロパティは以下のように取得できます。
 ```typescript
-let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
+let obj = TransformableObject.createRuntimeObject(mod.RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
 let object = obj.object;
 let pos = obj.worldPos;
 ```
@@ -303,7 +303,7 @@ let pos = obj.worldPos;
 </p>
 
 #### worldRot
-* `WorldRot: mod.Vector | undefined`  
+* `worldRot: mod.Vector | undefined`  
 オブジェクトの現在の姿勢をオイラー座標形式でワールド座標系で取得します。
 
 #### effectiveWorldRot
