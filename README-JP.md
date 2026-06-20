@@ -259,53 +259,75 @@ let object = obj.object;
 let pos = obj.worldPos;
 ```
 #### object
-* `object: mod.Object | undefined`  
+* `object: mod.Object | undefined`
+対象のオブジェクトそのものを取得します。
+対象のオブジェクトがEmptyオブジェクトの場合は`undefined`を返します。
 
 #### id
 * `id: number | undefined`  
+対象のオブジェクトのObjIdを取得します。
+対象のオブジェクトがEmptyオブジェクトの場合は`undefined`を返します。
 
 #### prefabEnum
 * `prefabEnum`  
+対象のオブジェクトのprefabEnumを取得します。
+対象がRuntimeオブジェクト以外の場合は`undefined`を返します。
 
 #### offset
 * `offset: mod.Vector`  
+対象のオブジェクトに生成時に設定されたoffsetを取得します。
 
 #### worldPos
-* `worldPos: mod.Vector | undefined`  
+* `worldPos: mod.Vector | undefined`
+オブジェクトの現在の座標をワールド座標系で取得します。
 
 #### localPos
-* `localPos: mod.Vector | undefined`  
+* `localPos: mod.Vector | undefined`
+オブジェクトの現在の座標を**親オブジェクトのローカル座標系で**取得します。
 
 #### effectiveWorldPos
-* `effectiveWorldPos: mod.Vector | undefined`  
+* `effectiveWorldPos: mod.Vector | undefined`
+オブジェクトが移動を予定している座標をワールド座標系で取得します。
 
 #### effectiveLocalPos
 * `effectiveLocalPos: mod.Vector | undefined`  
+オブジェクトが移動を予定している座標を**親オブジェクトのローカル座標系で**取得します。
 
 #### worldRot
-* `WorldRot: mod.Vector | undefined`  
+* `WorldRot: mod.Vector | undefined`
+オブジェクトの現在の姿勢をオイラー座標形式でワールド座標系で取得します。
 
 #### localRot
-* `localRot: mod.Vector | undefined`  
+* `localRot: mod.Vector | undefined`
+オブジェクトの現在の姿勢をオイラー座標形式で**親オブジェクトのローカル座標系で**取得します。
 
 #### effectiveWorldRot
-* `effectiveWorldRot: mod.Vector | undefined`  
+* `effectiveWorldRot: mod.Vector | undefined`
+オブジェクトが回転を予定している姿勢をワールド座標系で取得します。
 
 #### effectiveLocalRot
-* `effectiveLocalRot: mod.Vector | undefined`  
+* `effectiveLocalRot: mod.Vector | undefined`
+オブジェクトが回転を予定している姿勢を**親オブジェクトのローカル座標系で**取得します。
 
 #### worldScale
-* `worldScale: number | undefined`  
+* `worldScale: number | undefined`
+オブジェクトのスケールをワールド座標系で取得します。
 
 #### localScale
-* `localScale: number | undefined`  
+* `localScale: number | undefined`
+オブジェクトのスケールを**親オブジェクトのローカル座標系で**取得します。
 
 #### parent
-* `parent: TransformableObject | undefined`  
+* `parent: TransformableObject | undefined`
+対象の親オブジェクトを取得します。
+親オブジェクトが存在しない場合は`undefined`を返します。
 
 #### children
-* `children: Set<TransformableObject> | undefined`  
+* `children: Set<TransformableObject> | undefined`
+対象の子オブジェクトをTypescriptにおける`Set`形式で取得します。
 
 #### deleted
 * `deleted: boolean`
+オブジェクトが既に削除されているかを取得します。
+既に削除されている場合は`true`、まだ存在している場合は`false`を返します。
 
