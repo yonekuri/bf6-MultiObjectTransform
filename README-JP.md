@@ -181,10 +181,12 @@ remove(): void
 
 ### オブジェクトの移動・回転
 本ライブラリにおける移動・回転は
-1. `move`, `rotate`で移動、回転を予約
-2. それまでに予約された移動、回転を`applyTransform`で実際のTransformableObjectに反映
+1. `move`, `rotate`で移動・回転を予約
+2. それまでに予約された移動・回転を`applyTransform`で実際のTransformableObjectに反映
 の流れで行われます。
 `applyTransform`が実行されるまでは実際にはオブジェクトは移動しません。
+**子オブジェクトは親オブジェクトのローカル座標系に属しており、子オブジェクトに対する移動・回転の操作はローカル座標系におけるものとして解釈されます。**
+また、子オブジェクトを持つオブジェクトに対して移動・回転の操作を行った場合、**子オブジェクトとの相対的な位置・姿勢を維持したまま一体となって移動します**。
 > ⚠️TransformableObjectの管理下にあるオブジェクトは外部から`mod.MoveObject`などで移動されることを想定していないため、それらによる操作は行わないでください。
 
 
@@ -222,7 +224,7 @@ applyTransform(): void
 また、オブジェクトが子オブジェクトを持つ場合、それらにも再帰的に実行を行います。
 
 ### ベクトル変換
-オブジェクトのローカル座標系を用いてベクトルを変換する操作を行います。  
+ワールド座標系と対象が属する親オブジェクトのローカル座標系の間でベクトルを変換する操作を行います。  
 メソッドは以下のように使用します。
 ```typescript
 let obj = TransformableObject.createRuntimeObject(RuntimeSpawn_Common.FiringRange_Floor_01, mod.CreateVector(0,100,0), mod.CreateVector(0,0,0), mod.CreateVector(-10.25,0,-10.25), 1);
@@ -232,21 +234,25 @@ obj.localToWorldVector(mod.CreateVector(20,0,0));
 ```typescript
 localToWorldVector(vector): mod.Vector
 ```
+入力されたローカル座標系のベクトルをワールド座標系における値に変換します。
 
 #### worldToLocalVector
 ```typescript
 worldToLocalVector(vector): mod.Vector
 ```
+入力されたワールド座標系のベクトルをローカル座標系における値に変換します。
 
 #### effectiveLocalToWorldVector
 ```typescript
 effectiveLocalToWorldVector(vector): mod.Vector
 ```
+入力された**親オブジェクトが予定している移動も考慮した**ローカル座標系のベクトルをワールド座標系における値に変換します。
 
 #### effectiveWorldToLocalVector
 ```typescript
 effectiveWorldToLocalVector(vector): mod.Vector
 ```
+入力されたワールド座標系のベクトルを**親オブジェクトが予定している移動も考慮した**ローカル座標系における値に変換します。
 
 
 ### プロパティ
