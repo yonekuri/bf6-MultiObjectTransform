@@ -16,7 +16,7 @@
 [MultiObjectsTransform.ts](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/MultiObjectsTransform.ts "スクリプト")の内容をスクリプトの末尾にコピー&ペーストしてください。
 
 ## サンプルコード
-[MotSample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MOT_Sample.ts "スクリプト")を使用することで機能を試すことが可能です。
+[MotSample.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MotSample.ts)を使用することで機能を試すことが可能です。
 
 このサンプルコードではエイムを行いながらジャンプすることで視線の先に6つの板状オブジェクトを組み合わせた立方体が出現します。  
 しゃがむことで立方体は以下の運動を同時に行います。
