@@ -1,10 +1,11 @@
 # bf6-MultiObjectTransform
 [※日本語の解説はこちらです](https://github.com/yonekuri/bf6-MultiObjectsTransform/blob/main/README-JP.md)
 
-This script primarily adds support for the following features in Battlefield 6 Portal:
-
-- Creating parent-child relationships between multiple objects
-- Moving objects, rotating them around arbitrary axes, and combining these transformations into more complex motion
+This script supports object transform in BF6 Portal.
+The following custom features are added:  
+- Creation of composite objects by establishing parent-child relationships between multiple objects
+- Addition of the concept of empty objects, which can be used to define parent-child relationships
+- Application of movement, rotation around any axis, and combined transform to the created composite objects
 
 These features make it possible to move and animate multiple objects efficiently.
 
