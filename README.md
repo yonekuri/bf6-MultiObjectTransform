@@ -13,6 +13,8 @@ These features make it possible to move and animate multiple objects efficiently
 
 Possible applications include recreating large vehicles such as the airship from Battlefield 1, reproducing Battlefield 4-style Levolution events through object animation, and even creating games such as object-based soccer by implementing a simple physics system.
 
+**2026/10/02 Updated for ver1.4.3.0**
+
 ## Usage
 
 Copy and paste the contents of [MultiObjectTransform.ts](https://github.com/yonekuri/bf6-MultiObjectTransform/blob/main/MultiObjectTransform.ts) at the end of your script.
