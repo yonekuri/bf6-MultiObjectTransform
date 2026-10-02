@@ -1042,7 +1042,9 @@ export namespace TransformableObject {
         | mod.VehicleSpawner
         | mod.VL7Cloud
         | mod.VO
-        | mod.WorldIcon;
+        | mod.WorldIcon
+        | mod.BlockingSphere
+        | mod.Player;
 
     export type PrefabEnum =
         | mod.RuntimeSpawn_Common
@@ -1069,7 +1071,9 @@ export namespace TransformableObject {
         | mod.RuntimeSpawn_Sand
         | mod.RuntimeSpawn_GolmudRailway
         | mod.RuntimeSpawn_Plaza
-        | mod.RuntimeSpawn_Isolated;
+        | mod.RuntimeSpawn_Isolated
+        | mod.RuntimeSpawn_Ocean
+        | mod.RuntimeSpawn_Atoll;
 
     export type RuntimeObjectProperties = {
         position: mod.Vector;
