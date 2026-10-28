@@ -930,6 +930,7 @@ export namespace TransformableObject {
         | mod.RuntimeSpawn_Outskirts
         | mod.RuntimeSpawn_Subsurface
         | mod.RuntimeSpawn_Tungsten
+        | mod.RuntimeSpawn_Granite_Carrier
         | mod.RuntimeSpawn_Granite_Downtown
         | mod.RuntimeSpawn_Granite_Marina
         | mod.RuntimeSpawn_Granite_MilitaryRnD
