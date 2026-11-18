@@ -1074,7 +1074,9 @@ export namespace TransformableObject {
         | mod.RuntimeSpawn_Plaza
         | mod.RuntimeSpawn_Isolated
         | mod.RuntimeSpawn_Ocean
-        | mod.RuntimeSpawn_Atoll;
+        | mod.RuntimeSpawn_Atoll
+        | mod.RuntimeSpawn_DryLake
+        | mod.RuntimeSpawn_Paradise;
 
     export type RuntimeObjectProperties = {
         position: mod.Vector;
